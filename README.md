@@ -64,6 +64,7 @@ Here is how to set up Zeus and database on your local machine.
         docker-compose run --rm dev bash
 
         # inside the container:
+        python manage.py migrate
         python manage.py manage_users --create-institution "ZEUS"
         python manage.py manage_users --create-user <username> --institution=1 --superuser
 
