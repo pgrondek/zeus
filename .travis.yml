@@ -26,6 +26,6 @@ jobs:
     - name: pytest
       script:
         - ./compile-translations.sh
-        - pytest -v --cov -n 2
+        - pytest -v --cov -n auto
       after_success:
         - codecov
