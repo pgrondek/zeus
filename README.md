@@ -115,9 +115,13 @@ In order to install a new package:
 
         docker-compose run --rm dev pip-compile
 
+  If upgrading existing packages, run `pip-compile --upgrade`.
+
 - rebuild the container to install new packages:
 
         docker-compose build
+
+- make sure to commit the changes to both files!
 
 ## Run (production)
 

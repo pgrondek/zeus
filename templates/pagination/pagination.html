@@ -10,11 +10,11 @@
     {% endif %}
     {% for page in pages %}
         {% if page %}
-            {% ifequal page page_obj.number %}
+            {% if page == page_obj.number %}
                 <li class="current"><a href="">{{ page }}</a></li>
             {% else %}
                 <li><a href="?page={{ page }}{{ getvars }}{{ hashtag }}">{{ page }}</a></li>
-            {% endifequal %}
+            {% endif %}
         {% else %}
                 <li class="unavailable"><a href="">&hellip;</a></li>
         {% endif %}
