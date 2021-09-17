@@ -88,7 +88,7 @@ function download_sk() {
 
     bb = new BlobBuilder;
     bb.append(jQuery.toJSON(SECRET_KEY));
-    saveAs(bb.getBlob(filetype), "{% trans "Trustee Key" %} {{ trustee.name }}.txt");
+    saveAs(bb.getBlob(filetype), "{% trans "Trustee Key" %} {{ election.name }}.txt");
   } catch (err) {
     UTILS.open_window_with_content(jQuery.toJSON(SECRET_KEY), "application/json");
   }
