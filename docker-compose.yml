@@ -38,3 +38,12 @@ services:
       - PGPASSWORD
     depends_on:
       - redis
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_DB: ${PGDATABASE}
+    volumes:
+      - ./volumes/pgdata:/var/lib/postgresql/data
