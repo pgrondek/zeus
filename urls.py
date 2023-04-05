@@ -49,21 +49,27 @@ urlpatterns = [
     re_path(r'^' + SERVER_PREFIX, include(app_patterns)),
 ]
 
-#SHOULD BE REPLACED BY APACHE STATIC PATH
-if getattr(settings, 'DEBUG', False) or getattr(settings, 'ZEUS_SERVE_STATIC', False):
-    static_urls = [
-        re_path(r'booth/(?P<path>.*)$', django.views.static.serve, {
-            'document_root': settings.BOOTH_STATIC_PATH
-        }),
-        re_path(r'static/zeus/(?P<path>.*)$', django.views.static.serve, {
-            'document_root': settings.ROOT_PATH + '/zeus/static/zeus'
-        }),
-        re_path(r'static/(?P<path>.*)$', django.views.static.serve, {
-            'document_root': settings.ROOT_PATH + '/server_ui/media'
-        }),
-    ]
 
-    urlpatterns += static_urls
+# For simplicity of setup, we removed external file server (apache/nginx), and
+# static files are now handled by WhiteNoiseMiddleware. This takes care of
+# serving STATIC_ROOT (`sitestatic` folder) under STATIC_URL (`/static/`). It
+# should be fast enough.
+#
+# However, there is also `/booth/`, which cannot be served this way, since it's
+# outside of STATIC_URL. We currently serve it using Django's `static.serve`,
+# which is probably less efficient. Ideally, it should be served under
+# `/static/booth` and handled using WhiteNoise a well.
+static_urls = [
+    # not necessary (handled by WhiteNoise as part of STATIC_URL):
+    # re_path(r'static/(?P<path>.*)$', django.views.static.serve,
+
+    # necessary for now (outside of STATIC_URL):
+    re_path(r'booth/(?P<path>.*)$', django.views.static.serve, {
+        'document_root': settings.BOOTH_STATIC_PATH
+    }),
+]
+
+urlpatterns += static_urls
 
 '''
 if settings.DEBUG:

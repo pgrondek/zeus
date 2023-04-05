@@ -47,6 +47,12 @@ Here is how to set up Zeus and database on your local machine.
      host    zeus       zeus  172.0.0.0/8  md5
      ```
 
+     For running tests, you need to allow access to additional databases:
+
+     ```
+     host    all       zeus  172.0.0.0/8  md5
+     ```
+
    * Restart Postgres:
 
      ```
@@ -86,6 +92,13 @@ To open a shell in the Docker container, for running additional commands:
 
     docker-compose run --rm dev pytest -v
 
+You can run multiple tests in parallel:
+
+    docker-compose run --rm dev pytest -v -n auto
+
+If you ran into permission problems with Postgres, see "Installation" above,
+the part about `pg_hba.conf`.
+
 ## Manage Python packages
 
 We use [pip-tools](https://github.com/jazzband/pip-tools) to manage dependencies:
@@ -102,9 +115,13 @@ In order to install a new package:
 
         docker-compose run --rm dev pip-compile
 
+  If upgrading existing packages, run `pip-compile --upgrade`.
+
 - rebuild the container to install new packages:
 
         docker-compose build
+
+- make sure to commit the changes to both files!
 
 ## Run (production)
 

@@ -10,15 +10,15 @@ apipkg==1.5
     # via execnet
 asgiref==3.3.4
     # via django
-attrs==20.3.0
+attrs==21.2.0
     # via pytest
 backcall==0.2.0
     # via ipython
 billiard==3.6.4.0
     # via celery
-celery[redis]==5.0.5
+celery[redis]==5.1.0
     # via -r requirements.in
-certifi==2020.12.5
+certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
@@ -26,7 +26,7 @@ click-didyoumean==0.0.3
     # via celery
 click-plugins==1.1.1
     # via celery
-click-repl==0.1.6
+click-repl==0.2.0
     # via celery
 click==7.1.2
     # via
@@ -43,36 +43,38 @@ coverage==5.5
     # via
     #   codecov
     #   pytest-cov
-decorator==5.0.7
+decorator==5.0.9
     # via
     #   ipython
     #   traitlets
 dj-pagination==2.5.0
     # via -r requirements.in
-django==3.1.8
+django==3.2.4
     # via -r requirements.in
-execnet==1.8.0
+execnet==1.8.1
     # via pytest-xdist
-flake8==3.9.1
+flake8==3.9.2
     # via -r requirements.in
 gmpy2==2.0.8
     # via -r requirements.in
 idna==2.10
     # via requests
-importlib-metadata==4.0.1
+importlib-metadata==4.5.0
     # via -r requirements.in
 iniconfig==1.1.1
     # via pytest
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.22.0
+ipython==7.24.1
     # via -r requirements.in
 jedi==0.18.0
     # via ipython
-kombu==5.0.2
+kombu==5.1.0
     # via celery
 loky==2.9.0
     # via -r requirements.in
+matplotlib-inline==0.1.2
+    # via ipython
 mccabe==0.6.1
     # via flake8
 packaging==20.9
@@ -109,19 +111,19 @@ pycryptodome==3.10.1
     # via -r requirements.in
 pyflakes==2.3.1
     # via flake8
-pygments==2.8.1
+pygments==2.9.0
     # via ipython
 pyparsing==2.4.7
     # via packaging
-pytest-cov==2.11.1
+pytest-cov==2.12.1
     # via -r requirements.in
-pytest-django==4.2.0
+pytest-django==4.4.0
     # via -r requirements.in
 pytest-forked==1.3.0
     # via pytest-xdist
 pytest-xdist==2.2.1
     # via -r requirements.in
-pytest==6.2.3
+pytest==6.2.4
     # via
     #   -r requirements.in
     #   pytest-cov
@@ -140,7 +142,7 @@ reportlab==3.5.67
     # via -r requirements.in
 requests==2.25.1
     # via codecov
-six==1.15.0
+six==1.16.0
     # via
     #   click-repl
     #   traitlets
@@ -150,11 +152,13 @@ toml==0.10.2
     # via
     #   pep517
     #   pytest
+    #   pytest-cov
 traitlets==4.3.3
     # via
     #   -r requirements.in
     #   ipython
-urllib3==1.26.4
+    #   matplotlib-inline
+urllib3==1.26.5
     # via requests
 uwsgi==2.0.19.1
     # via -r requirements.in
@@ -162,6 +166,7 @@ vine==5.0.0
     # via
     #   amqp
     #   celery
+    #   kombu
 wcwidth==0.2.5
     # via prompt-toolkit
 whitenoise==5.2.0

@@ -85,5 +85,5 @@ class TestSTVCountView(TestCase):
         assert "download=json" in resp.content.decode()
 
         json_data = self.client.get(self.url + "?download=json").getvalue()
-        data = json.loads(json_data, encoding='utf8')
+        data = json.loads(json_data.decode('utf8'))
         assert "ΟΝΟΜΑ2" in json_data.decode('utf8')
