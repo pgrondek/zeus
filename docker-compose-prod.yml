@@ -71,4 +71,3 @@ services:
       POSTGRES_DB: ${PGDATABASE}
     volumes:
       - ./volumes/pgdata:/var/lib/postgresql/data
-

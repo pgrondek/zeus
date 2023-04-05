@@ -29,7 +29,7 @@ Here is how to set up Zeus and database on your local machine.
         sudo -u postgres createuser zeus --pwprompt
         createdb zeus --owner zeus
 
-3. Make sure PostgreSQL accepts connections from Docker:
+3. (optional) Make sure PostgreSQL accepts connections from Docker:
 
    * In `/etc/postgresql/.../main/postgresql.conf`, add Docker interface
      address (172.17.0.1) to `listen_addresses`, e.g.:
@@ -67,7 +67,7 @@ Here is how to set up Zeus and database on your local machine.
 
 5. Set up the initial database: run migrations, create user and institution:
 
-        docker-compose run --rm dev bash
+        docker-compose exec prod bash
 
         # inside the container:
         python manage.py migrate
