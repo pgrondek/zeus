@@ -1,20 +1,48 @@
 version: "3.7"
+networks:
+  default:
+  traefik:
+    external: true
+    name: traefik
 services:
   redis:
     image: redis:latest
+    restart: unless-stopped
 
-  dev:
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-
+  prod:
+    command: uwsgi --master --ini uwsgi.ini --die-on-term
+    restart: unless-stopped
+    #ports:
+    #- "8094:8000"
+    expose:
+      - 8000
     build:
       context: .
-      target: zeus_dev
+      target: zeus_prod
+
     volumes:
-      - .:/home/user/zeus:rw
+      - ./data:/home/user/zeus/data:rw
+    networks:
+      - default
+      - traefik
     working_dir: /home/user/zeus
+    labels:
+      - environment=prod
+      - traefik.enable=true
+      - traefik.http.routers.${ROUTER_NAME}.rule=Host("${ZEUS_PROD_HOST}","www.${ZEUS_PROD_HOST}")
+      - traefik.http.services.${ROUTER_NAME}.loadbalancer.server.port=8000
     environment:
+      - DJANGO_SETTINGS_MODULE=${ZEUS_PROD_SETTINGS}
+      - ZEUS_PROD_SECRET_KEY
+      - ZEUS_PROD_HOST
+      - ZEUS_PROD_USE_HTTPS
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_USE_TLS
+      - EMAIL_USE_SSL
+
       - PGHOST
       - PGDATABASE
       - PGUSER
@@ -22,16 +50,29 @@ services:
     depends_on:
       - redis
 
-  dev_celery:
-    command: celery -A zeus.celery worker -l INFO --concurrency 1 --pool solo
+  prod_celery:
+    restart: unless-stopped
+    command: celery -A zeus.celery worker -l INFO --concurrency 2 -P solo -f /home/user/zeus/data/celery.log
 
     build:
       context: .
-      target: zeus_dev
+      target: zeus_prod
+
     volumes:
-      - .:/home/user/zeus:rw
+      - ./data:/home/user/zeus/data:rw
     working_dir: /home/user/zeus
     environment:
+      - DJANGO_SETTINGS_MODULE=${ZEUS_PROD_SETTINGS}
+      - ZEUS_PROD_SECRET_KEY
+      - ZEUS_PROD_HOST
+      - ZEUS_PROD_USE_HTTPS
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_USE_TLS
+      - EMAIL_USE_SSL
+
       - PGHOST
       - PGDATABASE
       - PGUSER
