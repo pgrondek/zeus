@@ -1229,7 +1229,7 @@ msgstr ""
 "Aby uzyskać informacje o głosowaniu, możesz skontaktować się telefonicznie"
 
 msgid "or by email,"
-msgstr "lub przez e-mail z Partyjną Komisją Wyborczą lub Zarządem Okręgu."
+msgstr "lub przez e-mail"
 
 msgid "If you want to initiate an audit vote,"
 msgstr "Aby wykonać głosowanie kontrolne,"
