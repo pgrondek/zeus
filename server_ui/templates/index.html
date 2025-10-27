@@ -106,7 +106,9 @@
                                 {{election.institution.name}}
                             </td>
                             <td>
-                                {{election.admins.all.0.info.name}}
+                                {% for admin in election.admins.all %}
+                                    {{admin.info.name}}
+                                {% endfor %}
                             </td>
                             <td>
                                 {{election.created_at}}
@@ -160,4 +162,3 @@
 {% paginate %}
 </div>
 {% endblock %}
-

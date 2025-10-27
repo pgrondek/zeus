@@ -234,7 +234,10 @@ class ElectionManager(models.Manager):
         if user.superadmin_p:
             return super(ElectionManager, self).get_queryset().filter()
 
-        return super(ElectionManager, self).get_queryset().filter(admins__in=[user])
+        # Allow user to access all elections for given institution
+        institution_users = User.objects.filter(institution = user.institution)
+        users = list(map(lambda u: u.id, institution_users))
+        return super(ElectionManager, self).get_queryset().filter(admins__in=users).distinct()
 
 
 def _default_voting_starts_at(*args):

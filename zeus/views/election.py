@@ -8,6 +8,7 @@ import os
 
 from collections import OrderedDict
 
+from heliosauth.models import User
 from zeus.forms import ElectionForm
 from zeus.utils import election_reverse
 from zeus.views.utils import set_menu
@@ -50,7 +51,10 @@ def add_or_update(request, election=None):
         with transaction.atomic():
             election = election_form.save()
             if not election.admins.filter(pk=user.pk).count():
-                election.admins.add(user)
+                # Add all users in institution to election administration
+                institution_users = User.objects.filter(institution = user.institution)
+                for institution_user in institution_users:
+                    election.admins.add(institution_user)
             if election_form.creating:
                 election.logger.info("Election created")
                 msg = "New election created"

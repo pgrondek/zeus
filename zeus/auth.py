@@ -315,8 +315,10 @@ class ZeusUser(object):
         if self.is_admin:
             if self._user.superadmin_p:
                 return True
-            return self._user.elections.filter(
-                pk__in=[election.pk]).count() > 0
+            if self._user.elections.filter(pk__in=[election.pk]).count() > 0:
+                return True
+            # Allow users to access all elections in their institution
+            return Election.objects.administered_by(self._user).filter(pk__in=[election.pk]).count() > 0
         return False
 
 
