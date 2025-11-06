@@ -16,6 +16,7 @@ app_patterns = []
 auth_urls = [
     re_path(r'^auth/logout', auth.logout, name='logout'),
     re_path(r'^auth/login', auth.password_login_view, name='login'),
+    re_path(r'^auth/admin', auth.oauth2_admin_login, name='oauth2_admin_login'),
     re_path(r'^auth/change_password', auth.change_password, name='change_password'),
     re_path(r'^voter-login$', auth.voter_login, name="voter_login"),
 ]
