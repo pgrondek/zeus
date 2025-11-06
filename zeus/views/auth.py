@@ -86,7 +86,7 @@ def oauth2_admin_login(request):
             try:
                 user = User.objects.get(user_id=username)
                 request.session[auth.USER_SESSION_KEY] = user.pk
-                return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))
+                return HttpResponseRedirect(reverse('admin_home'))
             except User.DoesNotExist:
                 messages.error(request, 'oauth2 user does not match admin')
                 return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))

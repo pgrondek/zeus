@@ -43,6 +43,11 @@ class Command(BaseCommand):
                            dest='create_user',
                            default=False,
                            help='Create a new user')
+        parser.add_argument('--nopassword',
+                           action='store_true',
+                           dest='nopassword',
+                           default=False,
+                           help='Dont set a password for user')
         parser.add_argument('--remove-user',
                            action='store_true',
                            dest='remove_user',
@@ -159,18 +164,24 @@ class Command(BaseCommand):
                 exit()
             inst = Institution.objects.get(pk=int(inst_pk))
 
-            password = getpass.getpass("Password:")
-            password_confirm = getpass.getpass("Confirm password:")
+            no_password = options.get('nopassword')
+            password = ''
+            if not no_password:
+                password = getpass.getpass("Password:")
+                password_confirm = getpass.getpass("Confirm password:")
 
-            if password != password_confirm:
-                print("Passwords don't match")
-                exit()
+                if password != password_confirm:
+                    print("Passwords don't match")
+                    exit()
 
             newuser = User()
             newuser.user_type = "password"
             newuser.admin_p = True
-            newuser.info = {'name': name or username, 'password':
-                            make_password(password)}
+            if no_password:
+                newuser.info = {'name': name or username}
+            else:
+                newuser.info = {'name': name or username, 'password':
+                                make_password(password)}
             newuser.name = name
             newuser.user_id = username
             newuser.superadmin_p = superadmin

@@ -690,7 +690,7 @@ class LoginForm(forms.Form):
         if user.is_disabled:
             raise forms.ValidationError(_("Your account is disabled"))
 
-        if check_password(password, user.info['password']):
+        if user.info.get('password') and check_password(password, user.info['password']):
             self._user_cache = user
             return self.cleaned_data
         else:
@@ -848,7 +848,7 @@ class ChangePasswordForm(forms.Form):
     def clean(self):
         cl = super(ChangePasswordForm, self).clean()
         pwd = self.cleaned_data['password'].strip()
-        if not check_password(pwd, self.user.info['password']):
+        if not self.user.info.get('password') or not check_password(pwd, self.user.info['password']):
             raise forms.ValidationError(_('Invalid password'))
         if not self.cleaned_data.get('new_password') == \
            self.cleaned_data.get('new_password_confirm'):
