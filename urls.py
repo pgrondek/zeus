@@ -19,6 +19,7 @@ auth_urls = [
     re_path(r'^auth/admin', auth.oauth2_admin_login, name='oauth2_admin_login'),
     re_path(r'^auth/change_password', auth.change_password, name='change_password'),
     re_path(r'^voter-login$', auth.voter_login, name="voter_login"),
+    re_path(r'^auth/voter-oauth$', auth.voter_oauth_login, name="voter_oauth_login"),
 ]
 
 admin_urls = [

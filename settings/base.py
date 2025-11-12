@@ -40,6 +40,15 @@ DATABASES = {
     }
 }
 
+OAUTH = {
+    'ENABLED': False,
+    'CLIENT_ID': '',
+    'CLIENT_SECRET': '',
+    'TOKEN_URL': 'https://authentik.company/application/o/token/',
+    'AUTHORIZATION_URL': 'https://authentik.company/application/o/authorize/',
+    'USER_INFO_URL': 'https://authentik.company/application/o/userinfo/',
+}
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
