@@ -3,6 +3,7 @@ import logging
 import six.moves.urllib.request
 import six.moves.urllib.error
 import six.moves.urllib.parse
+from django.conf import settings
 
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
@@ -80,14 +81,18 @@ def oauth2_admin_login(request):
     fake_poll= Object()
     from zeus import oauth2_login
 
-    fake_poll.oauth2_type = 'other'
-    fake_poll.oauth2_exchange_url = 'https://auth.grondek.pl/application/o/token/'# token url
-    fake_poll.oauth2_code_url = 'https://auth.grondek.pl/application/o/authorize/'# Authorization url
-    fake_poll.oauth2_confirmation_url ='https://auth.grondek.pl/application/o/userinfo/'# User info
-    fake_poll.oauth2_client_id = ''
-    fake_poll.oauth2_client_secret = ''
+    logger.info("Oauth login is: %s", settings.OAUTH['ENABLED'])
+    if not settings.OAUTH['ENABLED']:
+        return HttpResponseRedirect(reverse('login'))
 
-    oauth2 = oauth2_login.get_oauth2_module(fake_poll)
+    fake_poll.oauth2_type = 'discord'
+    fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
+    fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
+    fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
+    fake_poll.oauth2_client_id = settings.OAUTH['CLIENT_ID']
+    fake_poll.oauth2_client_secret = settings.OAUTH['CLIENT_SECRET']
+
+    oauth2 = oauth2_login.get_oauth2_module(fake_poll, 'oauth2_admin_login')
     if oauth2.can_exchange(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
@@ -317,3 +322,54 @@ def jwt_login(request):
     context = {'issuer': iss, 'voter_data': voter, 'polls_data': polls_data}
     tpl = 'jwt_polls_list'
     return render_template(request, tpl, context)
+
+@auth.unauthenticated_user_required
+def voter_oauth_login(request):
+    if not settings.OAUTH['ENABLED']:
+        logger.error("Oauth not enabled")
+
+    fake_poll= Object()
+    from zeus import oauth2_login
+
+    fake_poll.oauth2_type = 'discord'
+    fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
+    fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
+    fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
+    fake_poll.oauth2_client_id = settings.OAUTH['CLIENT_ID']
+    fake_poll.oauth2_client_secret = settings.OAUTH['CLIENT_SECRET']
+
+    oauth2 = oauth2_login.get_oauth2_module(fake_poll, 'voter_oauth_login')
+    if oauth2.can_exchange(request):
+        exchange_url = oauth2.get_exchange_url()
+        oauth2.exchange(exchange_url)
+        try:
+            voter = None
+            voter_email = oauth2.get_email()
+            polls = Poll.objects.filter(voters__voter_email=voter_email)
+
+            allowed_polls = []
+            for poll in polls:
+                allowed_polls.append(poll)
+
+            polls_data = []
+            for poll in allowed_polls:
+                data = [poll]
+                voter = poll.voters.get(voter_email=voter_email)
+                voter_link = voter.get_quick_login_url()
+                data.append(voter_link)
+                polls_data.append(data)
+
+            context = {'issuer': 'Zeus', 'voter_data': voter, 'polls_data': polls_data}
+            tpl = 'jwt_polls_list'
+            return render_template(request, tpl, context)
+
+        except six.moves.urllib.error.HTTPError as e:
+            messages.error(request, e.reason)
+            return HttpResponseRedirect(reverse('error',
+                                                kwargs={'code': 400}))
+    else:
+        url = oauth2.get_code_url()
+        logger.info("[thirdparty] code handshake from %s", url)
+        context = {'url': url}
+        tpl = 'admin_redirect'
+        return render_template(request, tpl, context)

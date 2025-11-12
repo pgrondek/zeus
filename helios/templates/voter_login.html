@@ -43,8 +43,11 @@ Please, provide your voter credentials sent to you via Email or SMS
     <input class="button" type="submit" value="{% trans "Login" %}" />
 </div>
 </form>
+{% if settings.OAUTH.ENABLED %}
+    <form action="/auth/auth/voter-oauth" method="get">
+        <input class="button" type="submit" value="Login via Discord" />
+    </form>
+{% endif %}
 </div>
 </div>
 {% endblock %}
-
-

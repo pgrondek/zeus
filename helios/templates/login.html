@@ -41,9 +41,11 @@ Voters have to use the link sent to them via email or SMS.
 <input class="button" type="submit" value={% trans "Login" %} />
 </div>
 </form>
+{% if settings.OAUTH.ENABLED %}
 <form action="/auth/auth/admin" method="get">
-    <input class="button" type="submit" value={% trans "Oauth" %} />
+    <input class="button" type="submit" value={% trans "Oauth login" %} />
 </form>
+{% endif %}
 </div>
 </div>
 {% endblock %}
