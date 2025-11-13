@@ -78,7 +78,7 @@ def oauth2_admin_login(request):
     if not settings.OAUTH['ENABLED']:
         return HttpResponseRedirect(reverse('login'))
 
-    fake_poll.oauth2_type = 'discord'
+    fake_poll.oauth2_type = settings.OAUTH['TYPE']
     fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
     fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
     fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
@@ -324,7 +324,7 @@ def voter_oauth_login(request):
     fake_poll= Object()
     from zeus import oauth2_login
 
-    fake_poll.oauth2_type = 'discord'
+    fake_poll.oauth2_type = settings.OAUTH['TYPE']
     fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
     fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
     fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
