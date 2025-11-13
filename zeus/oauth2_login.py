@@ -15,8 +15,8 @@ def oauth2_login_module(cls):
     return cls
 
 
-def get_oauth2_module(poll, callback_page):
-    return OAUTH2_REGISTRY.get(poll.oauth2_type)(poll, callback_page)
+def get_oauth2_module(config, callback_page):
+    return OAUTH2_REGISTRY.get(config.oauth2_type)(config, callback_page)
 
 
 def oauth2_callback_url(callback_page):
@@ -32,23 +32,33 @@ def oauth2_callback_url(callback_page):
 
     return "/".join([base, path])
 
+class Oauth2Config:
+
+    def __init__(self, oauth2_type, token_url, authorization_url, user_info_url, client_id, client_secret):
+        self.oauth2_type = oauth2_type
+        self.token_url = token_url
+        self.authorization_url = authorization_url
+        self.user_info_url = user_info_url
+        self.client_id = client_id
+        self.client_secret = client_secret
+
 
 class Oauth2Base(object):
 
-    def __init__(self, poll, callback_page):
-        self.poll = poll
-        self.exchange_url = poll.oauth2_exchange_url
-        self.confirmation_url = self.poll.oauth2_confirmation_url
+    def __init__(self, config:Oauth2Config, callback_page):
+        self.config = config
+        self.exchange_url = config.token_url
+        self.confirmation_url = self.config.user_info_url
         callback_url = oauth2_callback_url(callback_page)
         self.code_post_data = {
             'response_type': 'code',
-            'client_id': poll.oauth2_client_id,
+            'client_id': config.client_id,
             'redirect_uri': callback_url,
             }
 
         self.exchange_data = {
-            'client_id': poll.oauth2_client_id,
-            'client_secret': poll.oauth2_client_secret,
+            'client_id': config.client_id,
+            'client_secret': config.client_secret,
             'redirect_uri': callback_url,
             'grant_type': 'authorization_code',
             }
@@ -56,14 +66,12 @@ class Oauth2Base(object):
     def get_code_url(self):
         code_data = self.code_post_data
         encoded_data = six.moves.urllib.parse.urlencode(code_data)
-        url = "{}?{}".format(self.poll.oauth2_code_url, encoded_data)
+        url = "{}?{}".format(self.config.authorization_url, encoded_data)
         return url
 
     def can_exchange(self, request):
         if (request.GET.get('code')):
             self.code = request.GET.get('code')
-            # self.session_email = request.session['oauth2_admin_email']
-            # self.voter_uuid = request.session.get('oauth2_admin_uuid')
             return True
 
     def get_exchange_url(self):
@@ -85,8 +93,8 @@ class Oauth2Other(Oauth2Base):
 
     type_id = 'other'
 
-    def __init__(self, poll, callback_page):
-        super(Oauth2Other, self).__init__(poll, callback_page)
+    def __init__(self, config, callback_page):
+        super(Oauth2Other, self).__init__(config, callback_page)
         self.code_post_data['scope'] = 'openid profile email offline_access'
 
     def exchange(self, url):
@@ -115,8 +123,8 @@ class Oauth2Discord(Oauth2Base):
 
     type_id = 'discord'
 
-    def __init__(self, poll, callback_page):
-        super(Oauth2Discord, self).__init__(poll, callback_page)
+    def __init__(self, config, callback_page):
+        super(Oauth2Discord, self).__init__(config, callback_page)
         self.code_post_data['scope'] = 'identify email'
 
     def exchange(self, url):
@@ -130,11 +138,11 @@ class Oauth2Discord(Oauth2Base):
     def get_exchange_url(self):
         self.exchange_data['code'] = self.code
         self.exchange_data['grant_type'] = 'authorization_code'
-        self.exchange_data['client_id'] = self.poll.oauth2_client_id
-        self.exchange_data['client_secret'] = self.poll.oauth2_client_secret
+        self.exchange_data['client_id'] = self.config.client_id
+        self.exchange_data['client_secret'] = self.config.client_secret
 
         encoded_data = six.moves.urllib.parse.urlencode(self.exchange_data)
-        return (self.exchange_url, encoded_data)
+        return self.exchange_url, encoded_data
 
     def get_username(self):
         request = six.moves.urllib.request.Request(self.confirmation_url)

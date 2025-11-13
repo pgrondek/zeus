@@ -13,6 +13,7 @@ from kombu.abstract import Object
 
 from heliosauth.models import User
 from zeus import auth
+from zeus.oauth2_login import Oauth2Config
 from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 
@@ -71,21 +72,22 @@ def password_login_view(request):
 
 @auth.unauthenticated_user_required
 def oauth2_admin_login(request):
-    fake_poll= Object()
     from zeus import oauth2_login
 
     logger.info("Oauth login is: %s", settings.OAUTH['ENABLED'])
     if not settings.OAUTH['ENABLED']:
         return HttpResponseRedirect(reverse('login'))
 
-    fake_poll.oauth2_type = settings.OAUTH['TYPE']
-    fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
-    fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
-    fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
-    fake_poll.oauth2_client_id = settings.OAUTH['CLIENT_ID']
-    fake_poll.oauth2_client_secret = settings.OAUTH['CLIENT_SECRET']
+    oauth_config = Oauth2Config(
+        oauth2_type=settings.OAUTH['TYPE'],
+        token_url=settings.OAUTH['TOKEN_URL'],
+        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
+        user_info_url=settings.OAUTH['USER_INFO_URL'],
+        client_id=settings.OAUTH['CLIENT_ID'],
+        client_secret=settings.OAUTH['CLIENT_SECRET'],
+    )
 
-    oauth2 = oauth2_login.get_oauth2_module(fake_poll, 'oauth2_admin_login')
+    oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'oauth2_admin_login')
     if oauth2.can_exchange(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
@@ -320,18 +322,20 @@ def jwt_login(request):
 def voter_oauth_login(request):
     if not settings.OAUTH['ENABLED']:
         logger.error("Oauth not enabled")
+        return HttpResponseRedirect(reverse('login'))
 
-    fake_poll= Object()
     from zeus import oauth2_login
 
-    fake_poll.oauth2_type = settings.OAUTH['TYPE']
-    fake_poll.oauth2_exchange_url = settings.OAUTH['TOKEN_URL'] # token url
-    fake_poll.oauth2_code_url = settings.OAUTH['AUTHORIZATION_URL'] # Authorization url
-    fake_poll.oauth2_confirmation_url = settings.OAUTH['USER_INFO_URL'] # User info
-    fake_poll.oauth2_client_id = settings.OAUTH['CLIENT_ID']
-    fake_poll.oauth2_client_secret = settings.OAUTH['CLIENT_SECRET']
+    oauth_config = Oauth2Config(
+        oauth2_type=settings.OAUTH['TYPE'],
+        token_url=settings.OAUTH['TOKEN_URL'],
+        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
+        user_info_url=settings.OAUTH['USER_INFO_URL'],
+        client_id=settings.OAUTH['CLIENT_ID'],
+        client_secret=settings.OAUTH['CLIENT_SECRET'],
+    )
 
-    oauth2 = oauth2_login.get_oauth2_module(fake_poll, 'voter_oauth_login')
+    oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'voter_oauth_login')
     if oauth2.can_exchange(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
@@ -364,5 +368,5 @@ def voter_oauth_login(request):
         url = oauth2.get_code_url()
         logger.info("[thirdparty] code handshake from %s", url)
         context = {'url': url}
-        tpl = 'admin_redirect'
+        tpl = 'voter_redirect'
         return render_template(request, tpl, context)
