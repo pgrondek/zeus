@@ -44,6 +44,7 @@ OAUTH = {
     'ENABLED': False,
     'CLIENT_ID': '',
     'CLIENT_SECRET': '',
+    'TYPE': 'discord',
     'TOKEN_URL': 'https://authentik.company/application/o/token/',
     'AUTHORIZATION_URL': 'https://authentik.company/application/o/authorize/',
     'USER_INFO_URL': 'https://authentik.company/application/o/userinfo/',
