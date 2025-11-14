@@ -742,10 +742,6 @@ class PollForm(forms.ModelForm):
                                     initial="https://graph.facebook.com/v2.2/me",
                                     required=False)
 
-        if self.initial:
-            shib = self.initial.get('shibboleth_constraints', None)
-            if shib is not None and isinstance(shib, dict):
-                self.initial['shibboleth_constraints'] = json.dumps(shib)
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
 
@@ -754,14 +750,14 @@ class PollForm(forms.ModelForm):
         self.fieldsets = {'auth': [auth_title, auth_help, []]}
         self.fieldset_fields = []
 
-        auth_fields = ['google', 'facebook', 'shibboleth', 'oauth2']
+        auth_fields = ['google', 'facebook', 'oauth2']
         for name, field in list(self.fields.items()):
             if name.split("_")[0] in auth_fields:
                 self.fieldsets['auth'][2].append(name)
                 self.fieldset_fields.append(field)
 
         keyOrder = self.fieldsets['auth'][2]
-        for field in ['oauth2_thirdparty', 'shibboleth_auth']:
+        for field in ['oauth2_thirdparty']:
             prev_index = keyOrder.index(field)
             item = keyOrder.pop(prev_index)
             keyOrder.insert(0, item)
@@ -775,18 +771,11 @@ class PollForm(forms.ModelForm):
                   'oauth2_thirdparty', 'oauth2_type',
                   'oauth2_client_type', 'oauth2_client_id',
                   'oauth2_client_secret', 'oauth2_code_url',
-                  'oauth2_exchange_url', 'oauth2_confirmation_url',
-                  'shibboleth_auth', 'shibboleth_constraints')
+                  'oauth2_exchange_url', 'oauth2_confirmation_url',)
 
     def iter_fieldset(self, name):
         for field in self.fieldsets[name][2]:
             yield self[field]
-
-    def clean_shibboleth_constraints(self):
-        value = self.cleaned_data.get('shibboleth_constraints', None)
-        if value == "None":
-            return None
-        return value
 
     def clean(self):
 
@@ -821,12 +810,6 @@ class PollForm(forms.ModelForm):
         else:
             for field_name in oauth2_field_names:
                 data[field_name] = ''
-
-        shibboleth_field_names = []
-        if data['shibboleth_auth']:
-            for field_name in shibboleth_field_names:
-                if not data[field_name]:
-                    self._errors[field_name] = _('This field is required.'),
 
         return data
 

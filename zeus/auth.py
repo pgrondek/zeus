@@ -403,10 +403,3 @@ def allow_manager_access(func):
     func._allow_manager = True
     func.__globals__['foo'] = 'bar'
     return func
-
-
-def make_shibboleth_login_url(endpoint):
-    shibboleth_login = reverse('shibboleth_login', kwargs={'endpoint': endpoint})
-    url = '/'.join(s.strip('/') for s in filter(bool, [
-        shibboleth_login]))
-    return '/%s' % url

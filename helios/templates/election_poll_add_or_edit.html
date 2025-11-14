@@ -43,18 +43,6 @@ function hide_oauth2_elems(time){
     oauth2_elems.parent().next().hide(time);
 }
 
-var shibboleth_elems = $("textarea[id^=id_shibboleth_constraints],input[id^=id_shibboleth]:not(#id_shibboleth_auth)");
-
-function show_shibboleth_elems(time){
-    shibboleth_elems.parent().show(time);
-    shibboleth_elems.parent().next().show(time);
-}
-
-function hide_shibboleth_elems(time){
-    shibboleth_elems.parent().hide(time);
-    shibboleth_elems.parent().next().hide(time);
-}
-
 function collect_urls(){
     
     var urls = {};
@@ -92,15 +80,9 @@ $(function(){
 
     if ($("#id_oauth2_thirdparty").prop('checked')){
         show_oauth2_elems(150);
-        hide_shibboleth_elems(0);
-    }
-    else if ($("#id_shibboleth_auth").prop('checked')) {
-        show_shibboleth_elems(150);
-        hide_oauth2_elems(0);
     }
     else{
         hide_oauth2_elems(150);
-        hide_shibboleth_elems(0);
     }
 
 
@@ -108,22 +90,10 @@ $(function(){
 
     $("#id_oauth2_thirdparty").change(function(){
         if ($("#id_oauth2_thirdparty").prop('checked')){
-            hide_shibboleth_elems(150);
             show_oauth2_elems(150);
-            $("#id_shibboleth_auth").prop('checked', false)
         }
         else{
             hide_oauth2_elems(150);
-        }
-    });
-
-    $("#id_shibboleth_auth").change(function(){
-        if ($("#id_shibboleth_auth").prop('checked')){
-            show_shibboleth_elems(150);
-            $("#id_oauth2_thirdparty").prop("checked", false);
-            hide_oauth2_elems(150);
-        } else {
-            hide_shibboleth_elems(150);
         }
     });
 

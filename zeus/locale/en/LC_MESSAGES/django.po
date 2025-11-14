@@ -627,18 +627,6 @@ msgstr ""
 msgid "Administrators"
 msgstr ""
 
-msgid "Uninitialized shibboleth session."
-msgstr ""
-
-msgid "Invalid shibboleth endpoint"
-msgstr ""
-
-msgid "Invalid shibboleth data resolved."
-msgstr ""
-
-msgid "Shibboleth voter info assertion failed."
-msgstr ""
-
 msgid "Trustee login url sent"
 msgstr ""
 

@@ -741,10 +741,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     oauth2_extra = models.CharField(max_length=255,
                                     null=True, blank=True)
 
-    # shibboleth authentication
-    shibboleth_auth = models.BooleanField(default=False, verbose_name=_("Shibboleth login"))
-    shibboleth_constraints = JSONField(default=None, null=True, blank=True)
-
     objects = PollManager()
 
     class Meta:
@@ -766,30 +762,10 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     def sms_enabled(self):
         return self.election.sms_enabled
 
-    def get_shibboleth_constraints(self):
-        defaults = {
-            'assert_idp_key': 'REMOTE_USER',
-            'assert_voter_key': 'id',
-            'required_fields': ['REMOTE_USER', 'EPPN'],
-            'endpoint': 'default/login'
-        }
-        default_constraints = getattr(settings, 'SHIBBOLETH_DEFAULT_CONSTRAINTS',
-                                      defaults)
-        constraints = {}
-        constraints.update(default_constraints)
-        constraints.update(self.shibboleth_constraints or {})
-        return constraints
-
-    @property
-    def remote_login(self):
-        return self.oauth2_thirdparty or self.shibboleth_auth
-
     @property
     def remote_login_display(self):
         if self.oauth2_thirdparty:
             return _("Oauth2 Login %s") % self.oauth2_client_id
-        if self.shibboleth_auth:
-            return _("Shibboleth authentication")
         return None
 
     def reset_logger(self):

@@ -1293,65 +1293,6 @@ class TestWeightElection(TestSimpleElection):
         self.verbose('+ Voters file created')
         return voter_files
 
-
-class TestThirdPartyShibboleth(TestSimpleElection):
-
-    def voter_login(self, voter, voter_login_url=None):
-        r = self.c.get(voter_login_url, follow=True)
-        self.assertContains(r, "http-equiv")
-        url = auth.make_shibboleth_login_url('default/login')
-        self.assertContains(r, url)
-        assert self.c.session.get('shibboleth_voter_email') == \
-                         voter.voter_email
-        assert self.c.session.get('shibboleth_voter_uuid') == \
-                         voter.uuid
-        headers = {
-            'HTTP_MAIL': voter.voter_email + 'invalidate',
-            #'HTTP_EPPN': 'eppn',
-            'HTTP_REMOTE_USER': 'remoteid'
-        }
-        r = self.c.get(url, follow=True, **headers)
-        assert r.status_code == 403
-
-        headers['HTTP_EPPN'] = 'eppn'
-        r = self.c.get(voter_login_url, follow=True)
-        r = self.c.get(url, follow=True, **headers)
-        assert r.status_code == 403
-
-        headers['HTTP_MAIL'] = voter.voter_email
-        r = self.c.get(voter_login_url, follow=True)
-        r = self.c.get(url.replace("login", "fakeendpoint"),
-                       follow=True, **headers)
-        assert r.status_code == 403
-
-        r = self.c.get(voter_login_url, follow=True)
-        r = self.c.get(url, follow=True, **headers)
-        assert r.status_code == 200
-        assert r.context['user']
-        r = self.c.get(self.locations['logout'], follow=True)
-        assert r.context['user'].is_anonymous()
-
-        r = self.c.get(voter_login_url, follow=True)
-        headers['HTTP_MAIL'] = 'email1@voters.com:email2@voters.com'
-        r = self.c.get(url, follow=True, **headers)
-        assert r.status_code == 403
-
-        headers['HTTP_MAIL'] = 'email1@voters.com:email2@voters.com:%s' % voter.voter_email
-        r = self.c.get(voter_login_url, follow=True)
-        r = self.c.get(url, follow=True, **headers)
-        assert r.status_code == 200
-        assert r.context['user']
-        assert r.context['user']._user.uuid == voter.uuid
-        assert self.c.session.get('shibboleth_voter_email', None) is None
-        assert self.c.session.get('shibboleth_voter_uuid', None) is None
-
-    def _get_poll_params(self, index, poll=None):
-        return {
-            'shibboleth_auth': True,
-            'shibboleth_constraints': '{"assert_idp_key": "MAIL"}'
-        }
-
-
 class TestUniGovGrElection(TestSimpleElection):
 
     def setUp(self):

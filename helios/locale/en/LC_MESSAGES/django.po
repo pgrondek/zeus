@@ -159,17 +159,11 @@ msgstr ""
 msgid "Oauth2 login"
 msgstr ""
 
-msgid "Shibboleth login"
-msgstr ""
-
 msgid "JSON Web Token Login"
 msgstr ""
 
 #, python-format
 msgid "Oauth2 Login %s"
-msgstr ""
-
-msgid "Shibboleth authentication"
 msgstr ""
 
 msgid "Prepare poll questions"

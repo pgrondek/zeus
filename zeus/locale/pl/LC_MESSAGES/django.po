@@ -650,18 +650,6 @@ msgstr "Liczba głosowań"
 msgid "Administrators"
 msgstr "Administratorzy"
 
-msgid "Uninitialized shibboleth session."
-msgstr "Uninitialized shibboleth session."
-
-msgid "Invalid shibboleth endpoint"
-msgstr "Invalid shibboleth endpoint"
-
-msgid "Invalid shibboleth data resolved."
-msgstr "Invalid shibboleth data resolved."
-
-msgid "Shibboleth voter info assertion failed."
-msgstr "Shibboleth voter info assertion failed."
-
 msgid "Trustee login url sent"
 msgstr "Przesłano powierniczce jej URL do logowania"
 

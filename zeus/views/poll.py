@@ -888,17 +888,6 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         context = {'url': url}
         tpl = 'voter_redirect'
         return render_template(request, tpl, context)
-    elif poll.shibboleth_auth:
-        poll.logger.info("[thirdparty] shibboleth redirect for voter (%s, %s)",
-                         voter.voter_email, voter.uuid)
-        constraints = poll.get_shibboleth_constraints()
-        endpoint = constraints.get('endpoint')
-        request.session['shibboleth_voter_email'] = voter.voter_email
-        request.session['shibboleth_voter_uuid'] = voter.uuid
-        url = auth.make_shibboleth_login_url(endpoint)
-        context = {'url': url}
-        tpl = 'voter_redirect'
-        return render_template(request, tpl, context)
     else:
         user = auth.ZeusUser(voter)
         user.authenticate(request)

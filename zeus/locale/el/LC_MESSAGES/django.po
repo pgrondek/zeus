@@ -647,18 +647,6 @@ msgstr "Σύνολο κάλπεων"
 msgid "Administrators"
 msgstr "Διαχειριστές"
 
-msgid "Uninitialized shibboleth session."
-msgstr "Μη αρχικοποιημένη σύνδεση shibboleth"
-
-msgid "Invalid shibboleth endpoint"
-msgstr "Πρόβλημα στα δεδομένα shibboleth"
-
-msgid "Invalid shibboleth data resolved."
-msgstr "Πρόβλημα στα δεδομένα shibboleth"
-
-msgid "Shibboleth voter info assertion failed."
-msgstr "Πρόβλημα στα δεδομένα shibboleth"
-
 msgid "Trustee login url sent"
 msgstr "Η αποστολή πρόσκλησης πραγματοποιήθηκε"
 
