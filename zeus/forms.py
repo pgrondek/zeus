@@ -707,40 +707,8 @@ class PollForm(forms.ModelForm):
             ('confidential', 'confidential'),
         )
 
-        TYPES = (
-            ('google', 'google'),
-            ('facebook', 'facfebook'),
-            ('other', 'other')
-        )
-
-        self.fields['oauth2_type'] = forms.ChoiceField(required=False,
-                                                       choices=TYPES)
         self.fields['oauth2_client_type'] = forms.ChoiceField(required=False,
                                                               choices=CHOICES)
-        self.fields['google_code_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://accounts.google.com/o/oauth2/auth",
-                                    required=False)
-        self.fields['google_exchange_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://accounts.google.com/o/oauth2/token",
-                                    required=False)
-        self.fields['google_confirmation_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://www.googleapis.com/oauth2/v1/userinfo",
-                                    required=False)
-        self.fields['facebook_code_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://www.facebook.com/dialog/oauth",
-                                    required=False)
-        self.fields['facebook_exchange_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://graph.facebook.com/oauth/access_token",
-                                    required=False)
-        self.fields['facebook_confirmation_url'] = forms.CharField(
-                                    widget=HiddenInput,
-                                    initial="https://graph.facebook.com/v2.2/me",
-                                    required=False)
 
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
@@ -750,7 +718,7 @@ class PollForm(forms.ModelForm):
         self.fieldsets = {'auth': [auth_title, auth_help, []]}
         self.fieldset_fields = []
 
-        auth_fields = ['google', 'facebook', 'oauth2']
+        auth_fields = ['oauth2']
         for name, field in list(self.fields.items()):
             if name.split("_")[0] in auth_fields:
                 self.fieldsets['auth'][2].append(name)
@@ -768,7 +736,7 @@ class PollForm(forms.ModelForm):
     class Meta:
         model = Poll
         fields = ('name',
-                  'oauth2_thirdparty', 'oauth2_type',
+                  'oauth2_thirdparty',
                   'oauth2_client_type', 'oauth2_client_id',
                   'oauth2_client_secret', 'oauth2_code_url',
                   'oauth2_exchange_url', 'oauth2_confirmation_url',)

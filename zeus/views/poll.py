@@ -876,8 +876,6 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
 
     if poll.oauth2_thirdparty:
         oauth2 = poll.get_oauth2_module
-        if oauth2.type_id == 'google':
-            oauth2.set_login_hint(voter.voter_email)
         poll.logger.info("[thirdparty] setting thirdparty voter " +
                          "session data (%s, %s)",
                          voter.voter_email, voter.uuid)

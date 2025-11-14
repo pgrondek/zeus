@@ -198,27 +198,8 @@ SHUFFLE_MODULE = 'zeus.zeus_sk'
 HELIOS_PRIVATE_DEFAULT = False
 
 # authentication systems enabled
-#AUTH_ENABLED_AUTH_SYSTEMS = ['password','facebook','twitter', 'google', 'yahoo']
-AUTH_ENABLED_AUTH_SYSTEMS = ['google']
+AUTH_ENABLED_AUTH_SYSTEMS = ['password']
 AUTH_DEFAULT_AUTH_SYSTEM = None
-
-# facebook
-FACEBOOK_APP_ID = ''
-FACEBOOK_API_KEY = ''
-FACEBOOK_API_SECRET = ''
-
-# twitter
-TWITTER_API_KEY = ''
-TWITTER_API_SECRET = ''
-TWITTER_USER_TO_FOLLOW = 'heliosvoting'
-TWITTER_REASON_TO_FOLLOW = "we can direct-message you when the result has been computed in an election in which you participated"
-
-# the token for Helios to do direct messaging
-TWITTER_DM_TOKEN = {"oauth_token": "", "oauth_token_secret": "", "user_id": "", "screen_name": ""}
-
-# LinkedIn
-LINKEDIN_API_KEY = ''
-LINKEDIN_API_SECRET = ''
 
 # email server
 EMAIL_SUBJECT_PREFIX = '[ZEUS] '
