@@ -57,6 +57,8 @@ def prepare_vars(request, vars):
 
     vars_with_user['trustee'] = vars.get('trustee', trustee)
 
+    vars_with_user['oauth2_voter'] = session.get('oauth2_voter_access_token')
+
     return vars_with_user
 
 

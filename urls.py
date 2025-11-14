@@ -22,6 +22,7 @@ auth_urls = [
     re_path(r'^auth/oauth2$', auth.oauth2_login, name="oauth2_login"),
     re_path(r'^auth/jwt$', auth.jwt_login, name="jwt_login"),
     re_path(r'^auth/voter-oauth$', auth.voter_oauth_login, name="voter_oauth_login"),
+    re_path(r'^auth/voter-oauth-logout$', auth.voter_oauth_logout, name='voter_oauth_logout'),
     re_path(r'^auth/voter-oauth/polls$', auth.voter_oauth_polls, name="voter_oauth_polls"),
     re_path(r'^auth/shibboleth/(?P<endpoint>.*)$', auth.shibboleth_login, name="shibboleth_login"),
 ]
