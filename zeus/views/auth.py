@@ -10,8 +10,9 @@ from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup
 from zeus import auth
+from zeus.models import Institution
 from zeus.oauth2_login import Oauth2Config
 from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
@@ -96,8 +97,24 @@ def oauth2_admin_login(request):
                 request.session[auth.USER_SESSION_KEY] = user.pk
                 return HttpResponseRedirect(reverse('admin_home'))
             except User.DoesNotExist:
-                messages.error(request, 'oauth2 user does not match admin')
-                return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))
+                if not settings.OAUTH['CREATE_ADMIN_IF_DOES_NOT_EXIST']:
+                    messages.error(request, 'oauth2 user does not match admin')
+                    return HttpResponseRedirect(reverse('home', kwargs={'code': 400}))
+
+                new_user = User()
+                new_user.user_type = "password" # lol
+                new_user.admin_p = True
+                new_user.info = {'name': user_id, 'authorization': 'discord'}
+                new_user.user_id = user_id
+                new_user.superadmin_p = False
+                new_user.management_p = False
+                new_user.institution = Institution.objects.get(pk=int(settings.OAUTH['CREATE_ADMIN_INSTITUTION_ID']))
+                new_user.ecounting_account = False
+                new_user.save()
+                new_user.user_groups.set([UserGroup.objects.get(name="default")])
+                request.session[auth.USER_SESSION_KEY] = new_user.pk
+                return HttpResponseRedirect(reverse('admin_home'))
+
         except six.moves.urllib.error.HTTPError as e:
             messages.error(request, e.reason)
             return HttpResponseRedirect(reverse('error',
