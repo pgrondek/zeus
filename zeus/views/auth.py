@@ -77,14 +77,7 @@ def oauth2_admin_login(request):
     if not settings.OAUTH['ENABLED']:
         return HttpResponseRedirect(reverse('login'))
 
-    oauth_config = Oauth2Config(
-        oauth2_type=settings.OAUTH['TYPE'],
-        token_url=settings.OAUTH['TOKEN_URL'],
-        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
-        user_info_url=settings.OAUTH['USER_INFO_URL'],
-        client_id=settings.OAUTH['CLIENT_ID'],
-        client_secret=settings.OAUTH['CLIENT_SECRET'],
-    )
+    oauth_config = oauth2_login.get_oauth2_config()
 
     oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'oauth2_admin_login')
     if oauth2.can_exchange(request):
@@ -328,14 +321,7 @@ def voter_oauth_login(request):
 
     from zeus import oauth2_login
 
-    oauth_config = Oauth2Config(
-        oauth2_type=settings.OAUTH['TYPE'],
-        token_url=settings.OAUTH['TOKEN_URL'],
-        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
-        user_info_url=settings.OAUTH['USER_INFO_URL'],
-        client_id=settings.OAUTH['CLIENT_ID'],
-        client_secret=settings.OAUTH['CLIENT_SECRET'],
-    )
+    oauth_config = oauth2_login.get_oauth2_config()
 
     oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'voter_oauth_login')
     if oauth2.can_exchange(request):
@@ -357,22 +343,15 @@ def voter_oauth_login(request):
         tpl = 'voter_redirect'
         return render_template(request, tpl, context)
 
-
+@auth.unauthenticated_user_required
 def voter_oauth_polls(request):
     if not request.session.get('oauth2_voter_access_token'):
-        messages.error(request, 'missing access token')
-        return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))
+        messages.error(request, 'Missing access token')
+        return HttpResponseRedirect(reverse('voter_oauth_login'))
 
     from zeus import oauth2_login
 
-    oauth_config = Oauth2Config(
-        oauth2_type=settings.OAUTH['TYPE'],
-        token_url=settings.OAUTH['TOKEN_URL'],
-        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
-        user_info_url=settings.OAUTH['USER_INFO_URL'],
-        client_id=settings.OAUTH['CLIENT_ID'],
-        client_secret=settings.OAUTH['CLIENT_SECRET'],
-    )
+    oauth_config = oauth2_login.get_oauth2_config()
 
     oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'voter_oauth_login')
     oauth2.access_token = request.session.get('oauth2_voter_access_token')
