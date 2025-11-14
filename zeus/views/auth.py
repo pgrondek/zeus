@@ -323,6 +323,9 @@ def voter_oauth_login(request):
         logger.error("Oauth not enabled")
         return HttpResponseRedirect(reverse('login'))
 
+    if request.session.get('oauth2_voter_access_token'):
+        return HttpResponseRedirect(reverse('voter_oauth_polls'))
+
     from zeus import oauth2_login
 
     oauth_config = Oauth2Config(
