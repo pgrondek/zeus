@@ -31,82 +31,9 @@
 {% endif %}
 
 <script>
-var oauth2_elems = $("input[id^=id_oauth2]:not(#id_oauth2_thirdparty), select[id^=id_oauth2]");
-
-function show_oauth2_elems(time){
-    oauth2_elems.parent().show(time);
-    oauth2_elems.parent().next().show(time);
-}
-
-function hide_oauth2_elems(time){
-    oauth2_elems.parent().hide(time);
-    oauth2_elems.parent().next().hide(time);
-}
-
-function collect_urls(){
-    
-    var urls = {};
-    var types = ["google", "facebook"];
-    var subtypes = ["code", "exchange", "confirmation"]
-    for (var i = 0; i < types.length; i++) {
-        type = types[i]
-        urls_arr = []
-        for (var j = 0; j < subtypes.length; j++) {
-            subtype = subtypes[j]
-            var value = $("#id_"+type+"_"+subtype+"_url").val()
-            urls_arr.push(value)
-        }
-        urls[type] = urls_arr;
-    }
-    urls['other'] = ['', '', '']
-    return urls
-    }
-
-function set_initial_values(urls){
-    if ("{{poll}}" == "None"){
-        var code_field = $("#id_oauth2_code_url")
-        var exchange_field = $("#id_oauth2_exchange_url")
-        var confirmation_field = $("#id_oauth2_confirmation_url")
-        var type = "google";
-        code_field.val(urls[type][0])
-        exchange_field.val(urls[type][1])
-        confirmation_field.val(urls[type][2])
-    }
-}
 
 $(function(){
-    urls = collect_urls();
-    set_initial_values(urls);
-
-    if ($("#id_oauth2_thirdparty").prop('checked')){
-        show_oauth2_elems(150);
-    }
-    else{
-        hide_oauth2_elems(150);
-    }
-
-
     $(".fieldset-auth").next("br").remove();
-
-    $("#id_oauth2_thirdparty").change(function(){
-        if ($("#id_oauth2_thirdparty").prop('checked')){
-            show_oauth2_elems(150);
-        }
-        else{
-            hide_oauth2_elems(150);
-        }
-    });
-
-    $("#id_oauth2_type").change(function(){
-        var type = $(this).val();
-        var code_field = $("#id_oauth2_code_url")
-        var exchange_field = $("#id_oauth2_exchange_url")
-        var confirmation_field = $("#id_oauth2_confirmation_url")
-        code_field.val(urls[type][0])
-        exchange_field.val(urls[type][1])
-        confirmation_field.val(urls[type][2])
-        
-    });
 });
 </script>
 {% endif %}

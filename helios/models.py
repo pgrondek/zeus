@@ -721,26 +721,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     voters_last_notified_at = models.DateTimeField(null=True, default=None)
     index = models.PositiveIntegerField(default=1)
 
-    # voters oauth2 authentication
-    oauth2_thirdparty = models.BooleanField(default=False, verbose_name=_("Oauth2 login"))
-
-    oauth2_type = models.CharField(max_length=25,
-                                   null=True, blank=True)
-    oauth2_client_type = models.CharField(max_length=25,
-                                          null=True, blank=True)
-    oauth2_client_id = models.CharField(max_length=255,
-                                        null=True, blank=True)
-    oauth2_client_secret = models.CharField(max_length=255,
-                                            null=True, blank=True)
-    oauth2_code_url = models.CharField(max_length=255,
-                                  null=True, blank=True)
-    oauth2_exchange_url = models.CharField(max_length=255,
-                                  null=True, blank=True)
-    oauth2_confirmation_url = models.CharField(max_length=255,
-                                  null=True, blank=True)
-    oauth2_extra = models.CharField(max_length=255,
-                                    null=True, blank=True)
-
     objects = PollManager()
 
     class Meta:
@@ -761,12 +741,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     @property
     def sms_enabled(self):
         return self.election.sms_enabled
-
-    @property
-    def remote_login_display(self):
-        if self.oauth2_thirdparty:
-            return _("Oauth2 Login %s") % self.oauth2_client_id
-        return None
 
     def reset_logger(self):
         self._logger = None
@@ -843,11 +817,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         obj = election.ZeusDjangoElection.from_poll(self)
         obj.do_set_stage(self.zeus_stage)
         return obj
-
-    @property
-    def get_oauth2_module(self):
-        from zeus import oauth2
-        return oauth2.get_oauth2_module(self)
 
     def get_booth_url(self, request, preview=False):
         url_params = {

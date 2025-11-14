@@ -702,13 +702,6 @@ class PollForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.election = kwargs.pop('election', None)
         super(PollForm, self).__init__(*args, **kwargs)
-        CHOICES = (
-            ('public', 'public'),
-            ('confidential', 'confidential'),
-        )
-
-        self.fields['oauth2_client_type'] = forms.ChoiceField(required=False,
-                                                              choices=CHOICES)
 
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
@@ -718,28 +711,9 @@ class PollForm(forms.ModelForm):
         self.fieldsets = {'auth': [auth_title, auth_help, []]}
         self.fieldset_fields = []
 
-        auth_fields = ['oauth2']
-        for name, field in list(self.fields.items()):
-            if name.split("_")[0] in auth_fields:
-                self.fieldsets['auth'][2].append(name)
-                self.fieldset_fields.append(field)
-
-        keyOrder = self.fieldsets['auth'][2]
-        for field in ['oauth2_thirdparty']:
-            prev_index = keyOrder.index(field)
-            item = keyOrder.pop(prev_index)
-            keyOrder.insert(0, item)
-            self.fields[field].widget.attrs['field_class'] = 'fieldset-auth'
-            if field == 'oauth2_thirdparty':
-                self.fields[field].widget.attrs['field_class'] = 'clearfix last'
-
     class Meta:
         model = Poll
-        fields = ('name',
-                  'oauth2_thirdparty',
-                  'oauth2_client_type', 'oauth2_client_id',
-                  'oauth2_client_secret', 'oauth2_code_url',
-                  'oauth2_exchange_url', 'oauth2_confirmation_url',)
+        fields = ('name',)
 
     def iter_fieldset(self, name):
         for field in self.fieldsets[name][2]:
@@ -759,26 +733,6 @@ class PollForm(forms.ModelForm):
             (self.cleaned_data['name'] != self.instance.name):
             raise forms.ValidationError(_("Poll name cannot be changed\
                                                after freeze"))
-
-        oauth2_field_names = ['type', 'client_type', 'client_id', 'client_secret',
-                       'code_url', 'exchange_url', 'confirmation_url']
-        oauth2_field_names = ['oauth2_' + x for x in oauth2_field_names]
-        url_validate = URLValidator()
-        if data['oauth2_thirdparty']:
-            for field_name in oauth2_field_names:
-                if not data[field_name]:
-                    self._errors[field_name] = _('This field is required.'),
-            url_types = ['code', 'exchange', 'confirmation']
-            for url_type in url_types:
-                try:
-                    url_validate(data['oauth2_{}_url'.format(url_type)])
-                except ValidationError:
-                    self._errors['oauth2_{}_url'.format(url_type)] =\
-                        ((_("This URL is invalid"),))
-        else:
-            for field_name in oauth2_field_names:
-                data[field_name] = ''
-
         return data
 
     def save(self, *args, **kwargs):

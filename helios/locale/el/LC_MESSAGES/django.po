@@ -155,16 +155,6 @@ msgstr "Όνομα αντιστοιχίας κάλπης"
 msgid "Poll name"
 msgstr "Όνομα κάλπης"
 
-msgid "Oauth2 login"
-msgstr "Σύνδεση με Oauth2"
-
-msgid "JSON Web Token Login"
-msgstr "Σύνδεση με JSON Web Token"
-
-#, python-format
-msgid "Oauth2 Login %s"
-msgstr "Σύνδεση με Oauth2 (%s)"
-
 msgid "Prepare poll questions"
 msgstr "Ορισμός των ερωτήσεων της κάλπης"
 

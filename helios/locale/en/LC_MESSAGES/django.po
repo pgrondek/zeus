@@ -156,16 +156,6 @@ msgstr ""
 msgid "Poll name"
 msgstr ""
 
-msgid "Oauth2 login"
-msgstr ""
-
-msgid "JSON Web Token Login"
-msgstr ""
-
-#, python-format
-msgid "Oauth2 Login %s"
-msgstr ""
-
 msgid "Prepare poll questions"
 msgstr ""
 

@@ -1,27 +1,16 @@
 
 import logging
-import six.moves.urllib.request
-import six.moves.urllib.error
-import six.moves.urllib.parse
 
-from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseBadRequest
-from django.contrib import messages
-from django.shortcuts import redirect
-
-from zeus import auth
-from zeus.utils import poll_reverse
-from zeus.forms import ChangePasswordForm, VoterLoginForm
-
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import gettext_lazy as _
 
 from helios.view_utils import render_template
-from helios.models import Voter, Poll
+from zeus import auth
+from zeus.forms import ChangePasswordForm, VoterLoginForm
 from zeus.forms import LoginForm
+from zeus.utils import poll_reverse
 
 logger = logging.getLogger(__name__)
 
@@ -95,43 +84,3 @@ def change_password(request):
     return render_template(request, 'change_password',
                            {'form': form,
                             'password_changed': password_changed})
-
-
-@auth.unauthenticated_user_required
-def oauth2_login(request):
-    poll_uuid = request.GET.get('state')
-    try:
-        poll = Poll.objects.get(uuid=poll_uuid)
-    except Poll.DoesNotExist:
-        return HttpResponseBadRequest(400)
-    oauth2 = poll.get_oauth2_module
-    if oauth2.can_exchange(request):
-        oauth2.exchange(oauth2.get_exchange_url())
-        try:
-            confirmed, data = oauth2.confirm_email()
-            if confirmed:
-                voter = Voter.objects.get(poll__uuid=poll_uuid,
-                                          uuid=oauth2.voter_uuid)
-                user = auth.ZeusUser(voter)
-                user.authenticate(request)
-                poll.logger.info("Poll voter '%s' logged in",
-                                 voter.voter_login_id)
-                del request.session['oauth2_voter_uuid']
-                del request.session['oauth2_voter_email']
-                return HttpResponseRedirect(poll_reverse(poll, 'index'))
-            else:
-                poll.logger.info("[thirdparty] %s cannot resolve email from %r",
-                                 poll.remote_login_display, data)
-                messages.error(request, 'oauth2 user does not match voter')
-                return HttpResponseRedirect(reverse('error',
-                                                    kwargs={'code': 400}))
-        except six.moves.urllib.error.HTTPError as e:
-            poll.logger.exception(e)
-            messages.error(request, 'oauth2 error')
-            return HttpResponseRedirect(reverse('error',
-                                                kwargs={'code': 400}))
-    else:
-        poll.logger.info("[thirdparty] oauth2 '%s' can_exchange failed",
-                         poll.remote_login_display)
-        messages.error(request, 'oauth2 exchange failed')
-        return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))

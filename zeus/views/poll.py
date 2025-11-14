@@ -874,23 +874,10 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
     if voter.voter_password != str(voter_secret):
         raise PermissionDenied("Invalid secret")
 
-    if poll.oauth2_thirdparty:
-        oauth2 = poll.get_oauth2_module
-        poll.logger.info("[thirdparty] setting thirdparty voter " +
-                         "session data (%s, %s)",
-                         voter.voter_email, voter.uuid)
-        request.session['oauth2_voter_email'] = voter.voter_email
-        request.session['oauth2_voter_uuid'] = voter.uuid
-        url = oauth2.get_code_url()
-        poll.logger.info("[thirdparty] code handshake from %s", url)
-        context = {'url': url}
-        tpl = 'voter_redirect'
-        return render_template(request, tpl, context)
-    else:
-        user = auth.ZeusUser(voter)
-        user.authenticate(request)
-        poll.logger.info("Poll voter '%s' logged in", voter.voter_login_id)
-        return HttpResponseRedirect(poll_reverse(poll, 'index'))
+    user = auth.ZeusUser(voter)
+    user.authenticate(request)
+    poll.logger.info("Poll voter '%s' logged in", voter.voter_login_id)
+    return HttpResponseRedirect(poll_reverse(poll, 'index'))
 
 
 @auth.election_view(check_access=False)
