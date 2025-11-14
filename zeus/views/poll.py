@@ -850,11 +850,6 @@ def voter_booth_linked_login(request, election, poll, voter_uuid):
 def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
     voter = None
 
-    if poll.jwt_auth:
-        messages.error(request,
-                        _("Poll does not support voter url login."))
-        return HttpResponseRedirect(reverse('error', kwargs={'code': 403}))
-
     try:
         voter = Voter.objects.get(poll=poll, uuid=voter_uuid)
         if voter.excluded_at:

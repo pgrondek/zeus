@@ -740,11 +740,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                                   null=True, blank=True)
     oauth2_extra = models.CharField(max_length=255,
                                     null=True, blank=True)
-    # jwt authentication
-    jwt_auth = models.BooleanField(default=False, verbose_name=_("JWT login"))
-    jwt_public_key = models.TextField(null=True, default=None)
-    jwt_issuer = models.CharField(max_length=255,
-                                  null=True, blank=True)
 
     # shibboleth authentication
     shibboleth_auth = models.BooleanField(default=False, verbose_name=_("Shibboleth login"))
@@ -787,12 +782,10 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     @property
     def remote_login(self):
-        return self.oauth2_thirdparty or self.jwt_auth or self.shibboleth_auth
+        return self.oauth2_thirdparty or self.shibboleth_auth
 
     @property
     def remote_login_display(self):
-        if self.jwt_auth:
-            return _("JSON Web Token Login")
         if self.oauth2_thirdparty:
             return _("Oauth2 Login %s") % self.oauth2_client_id
         if self.shibboleth_auth:

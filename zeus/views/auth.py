@@ -23,14 +23,6 @@ from helios.view_utils import render_template
 from helios.models import Voter, Poll
 from zeus.forms import LoginForm
 
-JWT_SUPPORT = True
-try:
-    import jwt
-except ImportError:
-    jwt = None
-    JWT_SUPPORT = False
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -228,55 +220,3 @@ def shibboleth_login(request, endpoint):
         poll.logger.info("[thirdparty] Shibboleth login for %s", voter.voter_login_id)
         poll.logger.info("Poll voter '%s' logged in", voter.voter_login_id)
         return HttpResponseRedirect(poll_reverse(poll, 'index'))
-
-
-@auth.unauthenticated_user_required
-def jwt_login(request):
-    if not JWT_SUPPORT:
-        logger.error("JWT login not supported")
-        return HttpResponseRedirect(reverse("home"))
-
-    token = request.GET.get('jwt', None)
-    if not token:
-        message = "No json web token provided"
-        messages.error(request, message)
-        return redirect('home')
-
-    AUDIENCE = 'zeus' # add to settings
-
-    try:
-        data = jwt.decode(token, verify=False)
-    except (jwt.InvalidTokenError, ValueError) as error:
-        messages.error(request, error)
-        return redirect('home')
-
-    voter = None
-    iss = data.get('iss', None)
-    voter_email = data.get('sub', None)
-    if not (iss and voter_email):
-        error = "No iss or sub in token"
-        messages.error(request, error)
-        return redirect('home')
-    polls = Poll.objects.filter(jwt_auth=True, jwt_issuer=iss,
-                                voters__voter_email=voter_email)
-    allowed_polls = []
-    for poll in polls:
-        jwt_pk = poll.jwt_public_key
-        try:
-            jwt.decode(token, key=jwt_pk, audience=AUDIENCE, verify=True)
-        except (jwt.InvalidTokenError, ValueError) as error:
-            messages.error(request, error)
-            return redirect('home')
-        allowed_polls.append(poll)
-
-    polls_data = []
-    for poll in allowed_polls:
-        data = [poll]
-        voter = poll.voters.get(voter_email=voter_email)
-        voter_link = voter.get_quick_login_url()
-        data.append(voter_link)
-        polls_data.append(data)
-
-    context = {'issuer': iss, 'voter_data': voter, 'polls_data': polls_data}
-    tpl = 'jwt_polls_list'
-    return render_template(request, tpl, context)

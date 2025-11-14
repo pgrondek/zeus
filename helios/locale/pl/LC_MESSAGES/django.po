@@ -153,9 +153,6 @@ msgstr "Nazwa głosowania"
 msgid "Oauth2 login"
 msgstr "Logowanie przez Oauth2"
 
-msgid "JWT login"
-msgstr "Logowanie przez JWT"
-
 msgid "Shibboleth login"
 msgstr "Logowanie przez  Shibboleth"
 

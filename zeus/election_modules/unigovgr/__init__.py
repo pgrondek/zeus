@@ -32,8 +32,6 @@ class UniElectionHooks(ElectionHooks):
             oauth2_confirmation_url='',
             oauth2_exchange_url='',
             oauth2_client_id='',
-            jwt_public_key=''
-
         )
         election.polls.create(name=str(_("Electors: Group B")))
         return election_reverse(election, 'polls_list')

@@ -158,9 +158,6 @@ msgstr "Όνομα κάλπης"
 msgid "Oauth2 login"
 msgstr "Σύνδεση με Oauth2"
 
-msgid "JWT login"
-msgstr "Σύνδεση με JWT"
-
 msgid "Shibboleth login"
 msgstr "Σύνδεση με ακαδημαϊκό λογαριασμό (shibboleth)"
 

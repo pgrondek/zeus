@@ -713,13 +713,6 @@ class PollForm(forms.ModelForm):
             ('other', 'other')
         )
 
-        ordered_dict_prepend(self.fields, 'jwt_file',
-                             forms.FileField(
-                                 label="JWT public keyfile",
-                                 required=False))
-        self.fields['jwt_file'].widget.attrs['accept'] = '.pem'
-        self.fields['jwt_public_key'] = forms.CharField(required=False,
-                                                        widget=forms.Textarea)
         self.fields['oauth2_type'] = forms.ChoiceField(required=False,
                                                        choices=TYPES)
         self.fields['oauth2_client_type'] = forms.ChoiceField(required=False,
@@ -761,25 +754,24 @@ class PollForm(forms.ModelForm):
         self.fieldsets = {'auth': [auth_title, auth_help, []]}
         self.fieldset_fields = []
 
-        auth_fields = ['jwt', 'google', 'facebook', 'shibboleth', 'oauth2']
+        auth_fields = ['google', 'facebook', 'shibboleth', 'oauth2']
         for name, field in list(self.fields.items()):
             if name.split("_")[0] in auth_fields:
                 self.fieldsets['auth'][2].append(name)
                 self.fieldset_fields.append(field)
 
         keyOrder = self.fieldsets['auth'][2]
-        for field in ['jwt_auth', 'oauth2_thirdparty', 'shibboleth_auth']:
+        for field in ['oauth2_thirdparty', 'shibboleth_auth']:
             prev_index = keyOrder.index(field)
             item = keyOrder.pop(prev_index)
             keyOrder.insert(0, item)
             self.fields[field].widget.attrs['field_class'] = 'fieldset-auth'
-            if field == 'jwt_auth':
+            if field == 'oauth2_thirdparty':
                 self.fields[field].widget.attrs['field_class'] = 'clearfix last'
 
     class Meta:
         model = Poll
         fields = ('name',
-                  'jwt_auth', 'jwt_issuer', 'jwt_public_key',
                   'oauth2_thirdparty', 'oauth2_type',
                   'oauth2_client_type', 'oauth2_client_id',
                   'oauth2_client_secret', 'oauth2_code_url',
@@ -814,7 +806,6 @@ class PollForm(forms.ModelForm):
         oauth2_field_names = ['type', 'client_type', 'client_id', 'client_secret',
                        'code_url', 'exchange_url', 'confirmation_url']
         oauth2_field_names = ['oauth2_' + x for x in oauth2_field_names]
-        jwt_field_names = ['jwt_issuer', 'jwt_public_key']
         url_validate = URLValidator()
         if data['oauth2_thirdparty']:
             for field_name in oauth2_field_names:
@@ -837,13 +828,6 @@ class PollForm(forms.ModelForm):
                 if not data[field_name]:
                     self._errors[field_name] = _('This field is required.'),
 
-        if data['jwt_auth']:
-            for field_name in jwt_field_names:
-                if not data[field_name]:
-                    self._errors[field_name] = _('This field is required.'),
-        else:
-            for field_name in jwt_field_names:
-                data[field_name]=''
         return data
 
     def save(self, *args, **kwargs):
@@ -993,13 +977,13 @@ class VoterLoginForm(forms.Form):
             poll_id, secret = login_id.split("-", 1)
             secret = undecalize(secret)
         except ValueError:
-            raise forms.ValidationError(invalid_login_id_error)
+            raise forms.ValidationError('poll split error')
 
         poll = None
         try:
             poll = Poll.objects.get(pk=poll_id)
         except Poll.DoesNotExist:
-            raise forms.ValidationError(invalid_login_id_error)
+            raise forms.ValidationError('poll doesnt exit')
 
         try:
             self._voter = poll.voters.get(voter_password=secret)

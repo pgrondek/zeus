@@ -159,9 +159,6 @@ msgstr ""
 msgid "Oauth2 login"
 msgstr ""
 
-msgid "JWT login"
-msgstr ""
-
 msgid "Shibboleth login"
 msgstr ""
 
