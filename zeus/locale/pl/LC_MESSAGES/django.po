@@ -207,12 +207,6 @@ msgstr "Nieprawidłowa nazwa użytkownika lub hasło"
 msgid "Your account is disabled"
 msgstr "Twoje konto jest wyłączone"
 
-msgid "2-factor authentication"
-msgstr "Uwierzytelnianie dwuskładnikowe"
-
-msgid "2-factor authentication help text"
-msgstr "Tekst pomocy uwierzytelniania dwuskładnikowego"
-
 msgid "Duplicate poll names are not allowed"
 msgstr "Nazwy głosowań nie mogą się powtarzać"
 

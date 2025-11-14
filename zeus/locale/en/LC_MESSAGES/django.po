@@ -204,14 +204,6 @@ msgstr ""
 msgid "Your account is disabled"
 msgstr ""
 
-#, fuzzy
-#| msgid "2-factor authentication help text"
-msgid "2-factor authentication"
-msgstr "Optionally select 2-factor voter authentication"
-
-msgid "2-factor authentication help text"
-msgstr "Optionally select 2-factor voter authentication"
-
 msgid "Duplicate poll names are not allowed"
 msgstr ""
 

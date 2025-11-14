@@ -208,13 +208,6 @@ msgstr "Μη έγκυρος χρήστης ή συνθηματικό"
 msgid "Your account is disabled"
 msgstr "Ο λογαριασμός είναι απενεργοποιημένος"
 
-msgid "2-factor authentication"
-msgstr "Ταυτοποίηση 2-factor"
-
-msgid "2-factor authentication help text"
-msgstr ""
-"Προαιρετικά επιλέξτε μέθοδο 2ου βήματος/παράγοντα ταυτοποίησης ψηφοφόρων"
-
 msgid "Duplicate poll names are not allowed"
 msgstr "Δεν επιτρέπονται κάλπες με ίδιο όνομα"
 

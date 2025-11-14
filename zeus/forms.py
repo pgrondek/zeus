@@ -706,11 +706,6 @@ class PollForm(forms.ModelForm):
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
 
-        auth_title = _('2-factor authentication')
-        auth_help = _('2-factor authentication help text')
-        self.fieldsets = {'auth': [auth_title, auth_help, []]}
-        self.fieldset_fields = []
-
     class Meta:
         model = Poll
         fields = ('name',)
