@@ -84,9 +84,10 @@ def oauth2_admin_login(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
         try:
-            username = oauth2.get_username()
+            # In User model user_id is used to send messages, so we're using user_id as email
+            user_id = oauth2.get_email()
             try:
-                user = User.objects.get(user_id=username)
+                user = User.objects.get(user_id=user_id)
                 request.session[auth.USER_SESSION_KEY] = user.pk
                 return HttpResponseRedirect(reverse('admin_home'))
             except User.DoesNotExist:
