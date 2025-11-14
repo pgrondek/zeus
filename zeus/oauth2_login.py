@@ -89,9 +89,6 @@ class Oauth2Base(object):
         encoded_data = six.moves.urllib.parse.urlencode(self.exchange_data)
         return (self.exchange_url, encoded_data)
 
-    def get_username(self):
-        raise NotImplementedError
-
     def get_email(self):
         raise NotImplementedError
 
@@ -116,17 +113,17 @@ class Oauth2Other(Oauth2Base):
         self.token_type = data['token_type']
         self.expires_in = data['expires_in']
 
-    def get_username(self):
+    def get_email(self):
         request = six.moves.urllib.request.Request(self.confirmation_url)
         request.add_header("Authorization", f"Bearer {self.access_token}")
         response = six.moves.urllib.request.urlopen(request)
         resp = response.read()
         data = json.loads(resp)
-        username = data
+        email = data
 
-        if 'nickname' in data:
-            username = data['nickname']
-        return username
+        if 'email' in data:
+            email = data['email']
+        return email
 
 @oauth2_login_module
 class Oauth2Discord(Oauth2Base):
@@ -153,19 +150,6 @@ class Oauth2Discord(Oauth2Base):
 
         encoded_data = six.moves.urllib.parse.urlencode(self.exchange_data)
         return self.exchange_url, encoded_data
-
-    def get_username(self):
-        request = six.moves.urllib.request.Request(self.confirmation_url)
-        request.add_header("Authorization", f"Bearer {self.access_token}")
-        request.add_header("User-Agent", "Zeus-ng app")
-        response = six.moves.urllib.request.urlopen(request)
-        resp = response.read()
-        data = json.loads(resp)
-        username = data
-
-        if 'username' in data:
-            username = data['username']
-        return username
 
     def get_email(self):
         request = six.moves.urllib.request.Request(self.confirmation_url)
