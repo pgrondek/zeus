@@ -14,6 +14,16 @@
       </div>
   </div>
   {% endif %}
+  {% if oauth2_voter %}
+  <div class="columns twelve loginbox">
+      <div class="panel warning" style="background-color: #8ca9ff">{% trans "You are logged in as voter with external authentication" %}
+          <br/><br/>
+          <a class="button tiny" href="{% url "voter_oauth_polls" %}">
+              {% trans "proceed to pools list" %}</a>
+          <a class="button tiny alert" href="{% url "voter_oauth_logout" %}?return_url=/">Oauth {% trans "logout" %}</a>
+      </div>
+  </div>
+  {% endif %}
   {% if voter %}
   <div class="columns twelve loginbox">
       <div class="panel warning">{% trans "You are logged in as voter" %}
@@ -44,4 +54,3 @@
         </div>
   </div>
   {% endif %}
-

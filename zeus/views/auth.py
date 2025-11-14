@@ -344,7 +344,10 @@ def voter_oauth_login(request):
         tpl = 'voter_redirect'
         return render_template(request, tpl, context)
 
-@auth.unauthenticated_user_required
+def voter_oauth_logout(request):
+    del request.session['oauth2_voter_access_token']
+    return HttpResponseRedirect(reverse("home"))
+
 def voter_oauth_polls(request):
     if not request.session.get('oauth2_voter_access_token'):
         messages.error(request, 'Missing access token')
