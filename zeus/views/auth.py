@@ -86,6 +86,11 @@ def oauth2_admin_login(request):
         try:
             # In User model user_id is used to send messages, so we're using user_id as email
             user_id = oauth2.get_email()
+            if not oauth2.validate_access('admin'):
+                messages.error(request, 'You\'re not in required discord server or you don\'t have a required role')
+                return HttpResponseRedirect(reverse('error',
+                                                    kwargs={'code': 400}))
+
             try:
                 user = User.objects.get(user_id=user_id)
                 request.session[auth.USER_SESSION_KEY] = user.pk
@@ -328,6 +333,10 @@ def voter_oauth_login(request):
     if oauth2.can_exchange(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
+        if not oauth2.validate_access('voter'):
+            messages.error(request, 'You\'re not in required discord server')
+            return HttpResponseRedirect(reverse('error',
+                                                kwargs={'code': 400}))
         try:
             request.session['oauth2_voter_access_token'] = oauth2.access_token
 
