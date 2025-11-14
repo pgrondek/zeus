@@ -18,6 +18,16 @@ def oauth2_login_module(cls):
 def get_oauth2_module(config, callback_page):
     return OAUTH2_REGISTRY.get(config.oauth2_type)(config, callback_page)
 
+def get_oauth2_config():
+    return Oauth2Config(
+        oauth2_type=settings.OAUTH['TYPE'],
+        token_url=settings.OAUTH['TOKEN_URL'],
+        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
+        user_info_url=settings.OAUTH['USER_INFO_URL'],
+        client_id=settings.OAUTH['CLIENT_ID'],
+        client_secret=settings.OAUTH['CLIENT_SECRET'],
+    )
+
 
 def oauth2_callback_url(callback_page):
     base = settings.SECURE_URL_HOST
