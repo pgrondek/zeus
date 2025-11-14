@@ -1,0 +1,51 @@
+{% extends TEMPLATE_BASE %}
+{% load i18n %}
+{% block page_top %}
+<h4>Voter</h4>
+<h5>Name: {{voter_data.voter_name}} {{voter_data.voter_surname}}</h5>
+<h5>Email: {{voter_data.voter_email}}</h5>
+{% endblock%}
+{% block content%}
+{{request.messages.error}}
+<table class="elections" width="100%">
+<thead>
+    <tr>
+        <th>Institution</th>
+        <th>Election</th>
+        <th>Poll</th>
+        <th>Starts</th>
+        <th>Ends</th>
+        <th>Voting Link</th>
+        <th>Status</th>
+    </tr>
+</thead>
+<tr>
+    {%for poll in  polls_data %}
+        <td>{{poll.0.election.institution.name}}</td>
+        <td align="right">{{poll.0.election.name}}</td>
+        <td>{{poll.0.name}}</td>
+        <td>
+            {{poll.0.election.voting_starts_at}}
+        </td>
+        <td>
+            {% if poll.0.election.voting_extended_until %}
+                {{poll.0.election.voting_extended_until}}
+            {% else %}
+                {{poll.0.election.voting_ends_at}}
+            {% endif %}
+        </td>
+        <td>
+            {% if poll.0.election.feature_voting %}
+                <a href="{{poll.1}}">Vote</a>
+            {% endif %}
+        </td>
+        <td>
+            {{ poll.0.election.status_display }}
+        </td>
+</tr>
+{% empty%}
+<h3>No elections found</h3>
+{% endfor%}
+</table>
+
+{% endblock%}

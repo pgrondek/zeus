@@ -9,7 +9,6 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from django.shortcuts import redirect
-from kombu.abstract import Object
 
 from heliosauth.models import User
 from zeus import auth
@@ -340,25 +339,9 @@ def voter_oauth_login(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
         try:
-            voter = None
-            voter_email = oauth2.get_email()
-            polls = Poll.objects.filter(voters__voter_email=voter_email)
+            request.session['oauth2_voter_access_token'] = oauth2.access_token
 
-            allowed_polls = []
-            for poll in polls:
-                allowed_polls.append(poll)
-
-            polls_data = []
-            for poll in allowed_polls:
-                data = [poll]
-                voter = poll.voters.get(voter_email=voter_email)
-                voter_link = voter.get_quick_login_url()
-                data.append(voter_link)
-                polls_data.append(data)
-
-            context = {'issuer': 'Zeus', 'voter_data': voter, 'polls_data': polls_data}
-            tpl = 'jwt_polls_list'
-            return render_template(request, tpl, context)
+            return HttpResponseRedirect(reverse('voter_oauth_polls'))
 
         except six.moves.urllib.error.HTTPError as e:
             messages.error(request, e.reason)
@@ -370,3 +353,43 @@ def voter_oauth_login(request):
         context = {'url': url}
         tpl = 'voter_redirect'
         return render_template(request, tpl, context)
+
+
+def voter_oauth_polls(request):
+    if not request.session.get('oauth2_voter_access_token'):
+        messages.error(request, 'missing access token')
+        return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))
+
+    from zeus import oauth2_login
+
+    oauth_config = Oauth2Config(
+        oauth2_type=settings.OAUTH['TYPE'],
+        token_url=settings.OAUTH['TOKEN_URL'],
+        authorization_url=settings.OAUTH['AUTHORIZATION_URL'],
+        user_info_url=settings.OAUTH['USER_INFO_URL'],
+        client_id=settings.OAUTH['CLIENT_ID'],
+        client_secret=settings.OAUTH['CLIENT_SECRET'],
+    )
+
+    oauth2 = oauth2_login.get_oauth2_module(oauth_config, 'voter_oauth_login')
+    oauth2.access_token = request.session.get('oauth2_voter_access_token')
+
+    voter = None
+    voter_email = oauth2.get_email()
+    polls = Poll.objects.filter(voters__voter_email=voter_email)
+
+    allowed_polls = []
+    for poll in polls:
+        allowed_polls.append(poll)
+
+    polls_data = []
+    for poll in allowed_polls:
+        data = [poll]
+        voter = poll.voters.get(voter_email=voter_email)
+        voter_link = voter.get_quick_login_url()
+        data.append(voter_link)
+        polls_data.append(data)
+
+    context = {'issuer': 'Zeus', 'voter_data': voter, 'polls_data': polls_data}
+    tpl = 'oauth_polls_list'
+    return render_template(request, tpl, context)
