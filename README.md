@@ -10,6 +10,7 @@ Changes introduced in Zeus-ng:
 * Added option for election admins to login via external authentication (discord, other oauth2)
 * Added option for voter to login via external authentication
 * Moved configuration to environment variables
+* Removed SMS notifications
 
 The differences from Helios and Zeus are as follows:
 

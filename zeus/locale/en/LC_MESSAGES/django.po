@@ -104,12 +104,6 @@ msgid "Communication language"
 msgstr ""
 
 #, python-format
-msgid "Notify voters using SMS (%d deliveries available for your account)"
-msgstr ""
-
-msgid "Mobile SMS notifications enabled"
-msgstr ""
-
 msgid "Invalid voting end date"
 msgstr ""
 
@@ -227,9 +221,6 @@ msgstr ""
 msgid "Email only"
 msgstr ""
 
-msgid "SMS only"
-msgstr ""
-
 msgid "Email and SMS"
 msgstr ""
 
@@ -239,13 +230,7 @@ msgstr ""
 msgid "In place of BODY"
 msgstr ""
 
-msgid "In place of SMS_BODY"
-msgstr ""
-
 msgid "Contact method"
-msgstr ""
-
-msgid "Do not send sms if voter email is set"
 msgstr ""
 
 msgid "Send To"
@@ -254,11 +239,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#, python-format
 msgid "%d deliveries available"
-msgstr ""
-
-msgid "Please provide SMS body"
 msgstr ""
 
 msgid "Current password"

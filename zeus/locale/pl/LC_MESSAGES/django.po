@@ -104,14 +104,6 @@ msgstr "Ustaw język stosowany do wiadomości e-mail"
 msgid "Communication language"
 msgstr "Język komunikacji"
 
-#, python-format
-msgid "Notify voters using SMS (%d deliveries available for your account)"
-msgstr ""
-"Powiadom wyborczynie SMSem (z Twojego konta można wysłać %d wiadomości)"
-
-msgid "Mobile SMS notifications enabled"
-msgstr "Włączone powiadomienie przez SMSy"
-
 msgid "Invalid voting end date"
 msgstr "Nieprawidłowa data zakończenia głosowania"
 
@@ -230,9 +222,6 @@ msgstr "wybrano głosujące, które jeszcze nie zagłosowały"
 msgid "Email only"
 msgstr "Tylko e-mail"
 
-msgid "SMS only"
-msgstr "Tylko SMS"
-
 msgid "Email and SMS"
 msgstr "Email oraz SMS"
 
@@ -242,14 +231,8 @@ msgstr "Temat e-maila"
 msgid "In place of BODY"
 msgstr "Zamiast BODY"
 
-msgid "In place of SMS_BODY"
-msgstr "Zamiast SMS_BODY"
-
 msgid "Contact method"
 msgstr "Metoda kontaktu"
-
-msgid "Do not send sms if voter email is set"
-msgstr "Nie wysyłaj SMSa jeżeli ustawiono adres e-mail"
 
 msgid "Send To"
 msgstr "Wyślij do"
@@ -260,9 +243,6 @@ msgstr "E-mail"
 #, python-format
 msgid "%d deliveries available"
 msgstr "Można wysłać %d SMSów"
-
-msgid "Please provide SMS body"
-msgstr "Podaj tekst SMSa"
 
 msgid "Current password"
 msgstr "Aktualne hasło"
@@ -691,9 +671,6 @@ msgstr "Rozpoczęto wysyłkę e-maili"
 
 msgid "Something went wrong"
 msgstr "Coś poszło nie tak"
-
-msgid "No SMS deliveries left."
-msgstr "Nie ma już możliwości wysyłki SMSów."
 
 msgid "Voter removed successfully"
 msgstr "Usunięcie wyborczyni powiodło się"
