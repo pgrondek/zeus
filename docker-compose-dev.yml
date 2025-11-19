@@ -19,6 +19,10 @@ services:
       - PGDATABASE=zeus
       - PGUSER=zeus
       - PGPASSWORD=password
+      - ZEUS_PROD_HOST=localhost:8000
+      - ZEUS_PROD_USE_HTTPS=False
+      - ZEUS_DEPLOYMENT=dev
+      - DJANGO_SETTINGS_MODULE=settings.dev
     depends_on:
       - redis
       - postgres
@@ -37,6 +41,7 @@ services:
       - PGDATABASE=zeus
       - PGUSER=zeus
       - PGPASSWORD=password
+      - DJANGO_SETTINGS_MODULE=settings.dev
     depends_on:
       - redis
       - postgres
@@ -50,6 +55,8 @@ services:
       POSTGRES_DB: zeus
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
 volumes:
   pgdata:

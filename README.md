@@ -143,6 +143,50 @@ If you update the code, execute database migrations before restarting:
 
 ## Environment properties
 
+### Database configuration
+
+| ENV        | Note                            | Default |
+|------------|---------------------------------|---------|
+| PGDATABASE | Postgres database name for zeus | `zeus`  |
+| PGUSER     | Postgres user name              | `zeus`  |
+| PGPASSWORD | Postgres password               | ``      |
+| PGHOST     | Postgres database hostname/IP   | ``      |
+| PGPORT     | Postgres database port          | `5432`  |
+
+### Django configuration
+
+| ENV          | Note                                           | Default     |
+|--------------|------------------------------------------------|-------------|
+| `SECRET_KEY` | Secret key for generating user sessions hashes | `replaceme` |
+
+### Zeus configuration
+
+| ENV                         | Note                                                | Example                    |
+|-----------------------------|-----------------------------------------------------|----------------------------|
+| `ZEUS_PROD_HOST`            | Hostname for your zeus instance                     | `zeus.example.com`         |
+| `ZEUS_PROD_USE_HTTPS`       | Use https instead of http                           | `True`                     |
+| `SITE_TITLE`                | Site title                                          | `Zeus election server`     |
+| `LANGUAGE_CODE`             | Language code                                       | `pl`                       |
+| `HELP_EMAIL_ADDRESS`        | Zeus support email address                          | `zeus-support@example.com` |
+| `ZEUS_DEPLOYMENT`           | Determines whenever it's `dev` or `prod` deployment | `prod`                     |
+| `ZEUS_ADMIN_NAME`           | Name of zeus admin                                  | `Zeus admin`               |
+| `ZEUS_ADMIN_EMAIL`          | Email address of zeus admin                         | `zeus.admin@example.com`   |
+| `ZEUS_ELECTION_ADMIN_NAME`  | Name of election admin                              | `Zeus admin`               |
+| `ZEUS_ELECTION_ADMIN_EMAIL` | Email address of election admin                     | `zeus.admin@example.com`   |
+
+### Email configuration
+
+| ENV                   | Note                                                 | Example                                           |
+|-----------------------|------------------------------------------------------|---------------------------------------------------|
+| `EMAIL_HOST`          | Email server                                         | `smtp.gmail.com`                                  |
+| `EMAIL_PORT`          | Port on which we connect to email server             | `25` - SMTP <br/> `465` - SMTPS <br/> `587` - TLS |
+| `EMAIL_HOST_USER`     | User for email server                                | `zeus`                                            |
+| `EMAIL_HOST_PASSWORD` | Password for user email account                      | `verysecurepassword`                              |
+| `EMAIL_USE_TLS`       | Whenever to use TLS for connecting to email server   | `True`                                            |
+| `EMAIL_USE_SSL`       | Whenever to use SMTPS for connecting to email server |                                                   |
+| `DEFAULT_FROM_EMAIL`  | Email address from which we send emails              | `zeus@example.com`                                |
+| `DEFAULT_FROM_NAME`   | Name that will be displayed from whom is email       | `Zeus admin`                                      |
+
 ### Oauth authentication
 
 Mainly supported oauth authentication is `discord`, there is also a `other` client but it's not tested and can have a

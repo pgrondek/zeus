@@ -50,7 +50,7 @@ COPY --chown=user:user . .
 
 # Use 'settings.prod' as default Django settings, docker-compose-prod.yml will
 # override it
-ENV DJANGO_SETTINGS_MODULE=settings.prod
+ENV DJANGO_SETTINGS_MODULE=settings.base
 
 # Compile translations
 RUN ./compile-translations.sh
