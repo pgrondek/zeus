@@ -10,6 +10,7 @@ from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from django.shortcuts import redirect
 
+from helios.models import Poll
 from heliosauth.models import User, UserGroup
 from zeus import auth
 from zeus.models import Institution
