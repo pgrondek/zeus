@@ -604,7 +604,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             'election_url': election_url,
             'custom_subject': default_subject,
             'custom_message': '&lt;BODY&gt;',
-            'custom_message_sms': '&lt;SMS_BODY&gt;',
             'SECURE_URL_HOST': settings.SECURE_URL_HOST,
             'voter': {
                 'vote_hash': '<SMART_TRACKER>',
@@ -624,9 +623,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
     with translation.override(lang):
         default_body = render_to_string(
             'email/%s_body.txt' % template, tpl_context)
-
-        default_sms_body = render_to_string(
-            'sms/%s_body.txt' % template, tpl_context)
 
     q_param = request.GET.get('q', None)
 
@@ -682,14 +678,12 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
                 subject_template = 'email/%s_subject.txt' % template
                 body_template = 'email/%s_body.txt' % template
-                body_template_sms = 'sms/%s_body.txt' % template
                 contact_method = email_form.cleaned_data['contact_method']
 
                 extra_vars = {
                     'SECURE_URL_HOST': settings.SECURE_URL_HOST,
                     'custom_subject': email_form.cleaned_data['email_subject'],
                     'custom_message': email_form.cleaned_data['email_body'],
-                    'custom_message_sms': email_form.cleaned_data['sms_body'],
                     'election_url': election_url,
                 }
                 task_kwargs = {
@@ -697,7 +691,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                     'notify_once': email_form.cleaned_data.get('notify_once'),
                     'subject_template_email': subject_template,
                     'body_template_email': body_template,
-                    'body_template_sms': body_template_sms,
                     'contact_methods': contact_method.split(":"),
                     'template_vars': extra_vars,
                     'voter_constraints_include': voter_constraints_include,
@@ -735,9 +728,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             message = _("Something went wrong")
             messages.error(request, message)
 
-    if election.sms_enabled and election.sms_data.left <= 0:
-        messages.warning(request, _("No SMS deliveries left."))
-
     context = {
         'email_form': email_form,
         'election': election,
@@ -745,8 +735,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         'voter_o': voter,
         'default_subject': default_subject,
         'default_body': default_body,
-        'default_sms_body': default_sms_body,
-        'sms_enabled': election.sms_enabled,
         'template': template,
         'filtered_voters': filtered_voters,
         'templates': TEMPLATES
@@ -1167,34 +1155,6 @@ def results_json(request, election, poll):
     data = poll.zeus.get_results()
     return HttpResponse(json.dumps(data, default=common_json_handler),
                         content_type="application/json")
-
-
-@csrf_exempt
-@auth.election_view(check_access=False)
-@require_http_methods(["POST"])
-def sms_delivery(request, election, poll):
-    try:
-        resp = json.loads(request.body)
-    except ValueError:
-        raise PermissionDenied
-
-    ip_addr = request.META.get('REMOTE_ADDR', '')
-    error = resp.get('error', None) or None
-    if error == '0':
-        error = None
-    code = "mybsms:" + resp['id']
-    poll.logger.info(
-        "Mobile delivery status received from '%r': %r" % (ip_addr, resp))
-    try:
-        voter = poll.voters.get(last_sms_code=code)
-        status = resp.get('status', 'unknown')
-        if error:
-            status = "%s:%r:%r" % ("ERROR", status, resp)
-        voter.last_sms_status = status
-        voter.save()
-    except Voter.DoesNotExist:
-        poll.logger.error("Cannot resolve voter for sms delivery code: %r", code)
-    return HttpResponse("OK")
 
 
 @auth.election_view(check_access=False)

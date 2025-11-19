@@ -13,7 +13,7 @@
 {% url "election_poll_download_signature" election_uuid poll_uuid cast_vote.fingerprint as download_url %}
 
 {% blocktrans with anchor_start='<a target="_blank" href="'|add:download_url|add:'">'|safe anchor_end="</a>"|safe %}
-A {{anchor_start}}submission receipt{{anchor_end}} for your vote has been sent to your email address or mobile phone.
+A {{anchor_start}}submission receipt{{anchor_end}} for your vote has been sent to your email address.
 {% endblocktrans %}
 
 {% endblock %}

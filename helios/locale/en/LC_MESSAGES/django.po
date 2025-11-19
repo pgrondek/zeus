@@ -537,9 +537,6 @@ msgstr ""
 msgid "Please confirm the password reset of user "
 msgstr ""
 
-msgid "SMS backend"
-msgstr ""
-
 msgid "Reset Password"
 msgstr ""
 
@@ -1217,7 +1214,7 @@ msgstr ""
 msgid ""
 "\n"
 "This is a login form for election administrators only.\n"
-"Voters have to use the link sent to them via email or SMS.\n"
+"Voters have to use the link sent to them via email.\n"
 msgstr ""
 
 #, python-format
@@ -1231,14 +1228,12 @@ msgid ""
 "ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
 "WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 
 #, python-format
 msgid ""
 "ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 
 msgid "As a trustee for the election"
@@ -1296,7 +1291,7 @@ msgstr "Redirecting..."
 
 msgid ""
 "\n"
-"Please, provide your voter credentials sent to you via Email or SMS\n"
+"Please, provide your voter credentials sent to you via Email\n"
 msgstr ""
 
 msgid "Redirecting..."
@@ -1335,9 +1330,6 @@ msgid "Email content"
 msgstr ""
 
 msgid "Email subject"
-msgstr ""
-
-msgid "SMS content"
 msgstr ""
 
 msgid "You can edit the contents of the message using the following form."

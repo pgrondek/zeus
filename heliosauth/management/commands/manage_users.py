@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from heliosauth.models import User, UserGroup, SMSBackendData
+from heliosauth.models import User, UserGroup
 from django.contrib.auth.hashers import make_password
 from zeus.models import Institution
 
@@ -58,16 +58,6 @@ class Command(BaseCommand):
                            dest='reset_password',
                            default=False,
                            help='Reset a user\'s password')
-        parser.add_argument('--enable-sms',
-                           action='store',
-                           dest='enable_sms',
-                           default=False,
-                           help='enable user sms backend. Provide sender id as value to this argument.')
-        parser.add_argument('--sms-limit',
-                           action='store',
-                           dest='sms_limit',
-                           default=False,
-                           help='update sms limit for user')
 
     def get_user(self, pk_or_userid):
         pk_or_userid = pk_or_userid.strip()
@@ -114,34 +104,6 @@ class Command(BaseCommand):
             password_confirm = getpass.getpass("Confirm password:")
             user.info['password'] = make_password(password)
             user.save()
-
-        if options.get("enable_sms"):
-            if not options['param']:
-                print("Provide a user id and sms backend sender id")
-                exit()
-
-            sender = options.get('enable_sms', 'ZEUS')
-            creds = getpass.getpass("Credentials (e.g. username:pass):")
-            username, password = creds.split(":")
-
-            user = self.get_user(options['param'])
-            if user.sms_data:
-                backend = user.sms_data
-            else:
-                backend = SMSBackendData()
-                backend.limit = options.get("sms_limit", 10)
-                print("SMS deliveries limit is set to 10")
-
-            backend.credentials = "%s:%s" % (username, password)
-            backend.sender = sender
-            backend.save()
-            user.sms_data = backend
-            user.save()
-
-        if options.get("sms_limit"):
-            user = self.get_user(options['param'])
-            user.sms_data.limit = options.get("sms_limit")
-            user.sms_data.save()
 
         if options.get('create_user'):
             username = options['param'].strip()

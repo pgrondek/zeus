@@ -515,9 +515,6 @@ msgstr "Utwórz grupę"
 msgid "Please confirm the password reset of user "
 msgstr "Potwierdź zresetowanie hasła osoby użytkowniczej "
 
-msgid "SMS backend"
-msgstr "Silnik obsługi SMSów"
-
 msgid "Reset Password"
 msgstr "Resetuj hasło"
 
@@ -1276,11 +1273,11 @@ msgstr "Logowanie"
 msgid ""
 "\n"
 "This is a login form for election administrators only.\n"
-"Voters have to use the link sent to them via email or SMS.\n"
+"Voters have to use the link sent to them via email.\n"
 msgstr ""
 "\n"
 "To formularz logowania wyłącznie dla osób administrujących wyborów.\n"
-"Osoby głosujące muszą wykorzystać łącze wysłane do nich e-mailem lub SMSem.\n"
+"Osoby głosujące muszą wykorzystać łącze wysłane do nich e-mailem.\n"
 
 #, python-format
 msgid ""
@@ -1295,23 +1292,19 @@ msgid ""
 "ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
 "WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 "WYBORY ZEUS %(election_name)s GŁOSOWANIE PRZEDŁUŻONO DO %(ext_date)s: OSOBA "
 "GŁOSUJĄCA Z KODEM REJESTRACJI %(voter_login_id)s\n"
 "GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
-"%(custom_message_sms)s"
 
 #, python-format
 msgid ""
 "ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 "WYBORY ZEUS %(election_name)s: OSOBA GŁOSUJĄCA Z KODEM REJESTRACJI "
 "%(voter_login_id)s\n"
 "GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
-"%(custom_message_sms)s"
 
 msgid "As a trustee for the election"
 msgstr "Jesteś osobą powierniczą tych wyborów"
@@ -1367,10 +1360,10 @@ msgstr "Logowanie osoby głosującej"
 
 msgid ""
 "\n"
-"Please, provide your voter credentials sent to you via Email or SMS\n"
+"Please, provide your voter credentials sent to you via Email\n"
 msgstr ""
 "\n"
-"Podaj dane uwierzytelniające osoby głosującej wysłane przez e-mail lub SMS\n"
+"Podaj dane uwierzytelniające osoby głosującej wysłane przez e-mail\n"
 
 msgid "Redirecting..."
 msgstr "Przekierowuję..."
@@ -1417,9 +1410,6 @@ msgstr "Treść e-maila"
 
 msgid "Email subject"
 msgstr "Temat e-maila"
-
-msgid "SMS content"
-msgstr "Treść SMSa"
 
 msgid "You can edit the contents of the message using the following form."
 msgstr "Możesz edytować treść komunikatu przy pomocy formularza."
@@ -1533,9 +1523,6 @@ msgstr "Aby ponownie uruchomić proces liczenia, kliknij "
 
 msgid "Terms of use"
 msgstr "Warunki wykorzystania"
-
-#~ msgid "Mobile backend is not set for this election"
-#~ msgstr "Dla tych wyborów nie ustawiono silnika obsługi SMSów"
 
 #~ msgid "Email body"
 #~ msgstr "Treść e-maila"

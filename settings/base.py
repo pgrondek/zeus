@@ -287,21 +287,6 @@ MIX_PART_SIZE = 104857600
 
 USE_X_SENDFILE = False
 
-
-# default sms credentials
-ZEUS_SMS_API_USERNAME = ""
-ZEUS_SMS_API_PASSWORD = ""
-ZEUS_SMS_API_SENDER = "ZEUS"
-
-# per election uuid sms api credentials
-# '<election-uuid>': {
-#   'username': '<username>',
-#   'password': '<password>',
-#   'sender': '<sender>'
-# }
-ZEUS_SMS_API_CREDENTIALS = {}
-
-
 DEMO_MAX_ELECTIONS = 5
 DEMO_MAX_VOTERS = 5
 DEMO_SUBMIT_INTERVAL_SECONDS = 10
@@ -325,8 +310,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 DATA_UPLOAD_MAX_MEMORY_SIZE = 30 * 1024 * 1024
 
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
-
-SMS_BACKEND = "mybsms"
 
 LOGGING = {
     'version': 1,

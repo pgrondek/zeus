@@ -13,7 +13,6 @@ from django.utils import translation
 from django.conf import settings
 from django.db import transaction
 
-from zeus import mobile
 from zeus import utils
 from zeus.contact import ContactBackend
 from zeus.celery import app
@@ -56,7 +55,6 @@ def single_voter_email(voter_uuid,
                        contact_id,
                        subject_template_email,
                        body_template_email,
-                       body_template_sms,
                        template_vars={},
                        update_date=True,
                        update_booth_invitation_date=False,
@@ -72,12 +70,10 @@ def single_voter_email(voter_uuid,
 
         subject_tpls = {
             'email': subject_template_email,
-            'sms': ''
         }
 
         body_tpls = {
             'email': body_template_email,
-            'sms': body_template_sms
         }
 
         def sent_hook(voter, method, error=None):
@@ -87,10 +83,6 @@ def single_voter_email(voter_uuid,
             if method == 'email' and update_date:
                 for voter in linked_voters:
                     voter.last_email_send_at = datetime.datetime.now()
-                    voter.save()
-            if method == 'sms' and update_date:
-                for voter in linked_voters:
-                    voter.last_sms_send_at = datetime.datetime.now()
                     voter.save()
             if update_booth_invitation_date:
                 for voter in linked_voters:
@@ -115,7 +107,6 @@ def voters_email(poll_id,
                  contact_id,
                  subject_template_email,
                  body_template_email,
-                 body_template_sms,
                  template_vars={},
                  voter_constraints_include=None,
                  voter_constraints_exclude=None,
@@ -132,7 +123,6 @@ def voters_email(poll_id,
     poll.logger.info("Notifying %d voters via %r" % (voters.count(), contact_methods))
     if len(poll.linked_polls) > 1 and 'vote_body' in body_template_email:
         body_template_email = body_template_email.replace("_body.txt", "_linked_body.txt")
-        #TODO: Handle linked polls sms notification
 
     for voter in voters:
         single_voter_email.delay(voter.uuid,
@@ -140,7 +130,6 @@ def voters_email(poll_id,
                                  contact_id,
                                  subject_template_email,
                                  body_template_email,
-                                 body_template_sms,
                                  template_vars,
                                  update_date,
                                  update_booth_invitation_date,
@@ -158,18 +147,15 @@ def send_cast_vote_email(poll_pk, voter_pk, signature, fingerprint):
     with translation.override(lang):
         email_subject = "email/cast_done_subject.txt"
         email_body = "email/cast_done_body.txt"
-        sms_body = "sms/cast_done_body.txt"
         # send it via the notification system associated with the auth system
         attachments = [('vote.signature', signature['signature'], 'text/plain')]
 
         subject_tpls = {
             'email': email_subject,
-            'sms': None
         }
 
         body_tpls = {
             'email': email_body,
-            'sms': sms_body
         }
 
         receipt_url = settings.SECURE_URL_HOST + reverse('download_signature_short', args=(fingerprint,))
@@ -358,13 +344,3 @@ def poll_compute_results(poll_id):
         subject = "Results computed - docs generated"
         msg = "Results computed - docs generated"
         e.notify_admins(msg=msg, subject=subject)
-
-
-@task(ignore_result=False)
-def check_sms_status(voter_id, code, election_uuid=None):
-    voter = Voter.objects.select_related().get(pk=voter_id)
-    if voter.last_sms_status:
-        return voter.last_sms_status
-
-    client = mobile.get_client(election_uuid)
-    return client.status(code)

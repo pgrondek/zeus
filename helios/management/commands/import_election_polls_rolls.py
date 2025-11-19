@@ -19,29 +19,9 @@ import os
 UPDATE = os.environ.get('UPDATE_EXISTING', 0)
 
 
-def validate_voter(mobile, email, throw=True):
-    if not mobile:
-        django_validate_email(email)
-        return
-
-    if mobile:
-        mobile = mobile.replace(' ', '')
-        mobile = mobile.replace('-', '')
-        if len(mobile) < 4 or not mobile[1:].isdigit or \
-            (mobile[0] != '+' and not mobile[0].isdigit()):
-            m = "Malformed mobile phone number: %s" % mobile
-            if throw:
-                raise ValidationError(m)
-            else:
-                return False
-    try:
-        django_validate_email(email)
-    except ValidationError as e:
-        if throw:
-            raise e
-        else:
-            return False
-    return mobile, email
+def validate_voter(email, throw=True):
+    django_validate_email(email)
+    return
 
 
 class Command(BaseCommand):
@@ -81,7 +61,7 @@ class Command(BaseCommand):
                 voter.voter_mobile = voter_data.get('mobile', None)
                 voter.voter_weight = voter_data.get('weight', 1)
                 if not existing:
-                    validate_voter(voter.voter_mobile, voter.voter_email)
+                    validate_voter(voter.voter_email)
                     voter.uuid = str(uuid.uuid4())
                     voter.init_audit_passwords()
                     voter.generate_password()
@@ -90,7 +70,7 @@ class Command(BaseCommand):
                     print("New voter added {}".format(voter.voter_email))
                 else:
                     if UPDATE:
-                        validate_voter(voter.voter_mobile, voter.voter_email)
+                        validate_voter(voter.voter_email)
                         updated += 1
                         voter.save()
                     else:

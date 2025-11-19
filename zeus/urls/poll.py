@@ -51,7 +51,6 @@ poll_patterns += [
     re_path(r'^results-(?P<language>.*).csv$', poll.results_file, name='election_poll_results_csv',
         kwargs={'ext': 'csv'}),
     re_path(r'^proofs.zip$', poll.zeus_proofs, name='election_poll_zeus_proofs'),
-    re_path(r'^sms_delivery$', poll.sms_delivery, name='election_poll_sms_delivery'),
 ]
 
 urlpatterns = [

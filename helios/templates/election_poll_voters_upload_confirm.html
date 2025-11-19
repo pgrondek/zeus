@@ -27,7 +27,6 @@
           <th>{% trans "Given name" %}</th>
           <th>{% trans "Surname" %}</th>
           <th>{% trans "Middle or other name" %}</th>
-          <th>{% trans "Mobile phone" %}</th>
           <th>{% trans "Vote weight" %}</th>
       </tr>
   </thead>
@@ -39,8 +38,9 @@
 <tr>
 {% endif %}
 <td>{{v.voter_id}}</td><td>{% if v.email %}{{v.email}}{% else %}{% trans "No email set" %}{% endif %}</td>
-    <td>{{v.name}}</td><td>{{v.surname}}</td>
-    <td>{{ v.fathername }}</td><td>{{ v.mobile }}</td>
+    <td>{{v.name}}</td>
+    <td>{{v.surname}}</td>
+    <td>{{ v.fathername }}</td>
     <td>{{ v.weight }}</td>
 </tr>
 {% endfor %}

@@ -15,8 +15,8 @@
   </p>
   <pre>{% filter force_escape %}{% blocktrans %}EXAMPLE_CSV_INPUT_TEXT{% endblocktrans %}{% endfilter %}
   </pre> 
-  <u style="float:right">{% trans "*The last three fields (middle name, mobile phone and vote weight) are optional" %}</u>
-  <u style="float:right">{% trans "*Setting voting weight requires for middle name and mobile phone fields to be set, even as empty values"%}</u>
+  <u style="float:right">{% trans "*The last three fields (middle name and vote weight) are optional" %}</u>
+  <u style="float:right">{% trans "*Setting voting weight requires for middle name field to be set, even as empty values"%}</u>
   <br /><br />
   <p>
   {% trans "The fields are, in order:" %}
@@ -34,7 +34,6 @@
     <li>{% trans "The voter's given name" %}</li>
     <li>{% trans "The voter's surname" %}</li>
     <li>{% trans "The voter's middle name, or other title or name (optional)" %}</li>
-    <li>{% trans "A personal mobile phone number of the voter (optional)" %}</li>
     <li>{% trans "Voters vote weight (positive integer)" %}</li>
   </ol>
   </p>

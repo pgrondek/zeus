@@ -531,9 +531,6 @@ msgstr "Δημιουργία ομάδας χρηστών"
 msgid "Please confirm the password reset of user "
 msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
 
-msgid "SMS backend"
-msgstr "Πάροχος SMS"
-
 msgid "Reset Password"
 msgstr "Επανέκδοση κωδικού"
 
@@ -603,11 +600,11 @@ msgstr "Η ψήφος σας υποβλήθηκε επιτυχώς. Ευχαρι
 msgid ""
 "\n"
 "A %(anchor_start)ssubmission receipt%(anchor_end)s for your vote has been "
-"sent to your email address or mobile phone.\n"
+"sent to your email address.\n"
 msgstr ""
 "\n"
 "Η %(anchor_start)sαπόδειξη υποβολής%(anchor_end)s για την ψήφο σας έχει "
-"σταλεί με email ή με sms στο κινητό σας τηλέφωνο.\n"
+"σταλεί με email ή με.\n"
 
 msgid "Eligibles count"
 msgstr "Πλήθος εκλεγόμενων"
@@ -1314,12 +1311,12 @@ msgstr "Είσοδος"
 msgid ""
 "\n"
 "This is a login form for election administrators only.\n"
-"Voters have to use the link sent to them via email or SMS.\n"
+"Voters have to use the link sent to them via email.\n"
 msgstr ""
 "\n"
 "Εδώ εισέρχονται μόνο οι διαχειριστές ψηφοφοριών.\n"
 "Οι ψηφοφόροι πρέπει να ακολουθήσουν το σύνδεσμο που τους έχει αποσταλεί μέσω "
-"email ή SMS.\n"
+"email.\n"
 
 #, python-format
 msgid ""
@@ -1334,20 +1331,17 @@ msgid ""
 "ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
 "WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 "ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s ΠΑΡΑΤΑΣΗ ΨΗΦΟΥ ΕΩΣ ΤΙΣ %(ext_date)s: Ο ΑΜ "
 "%(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ %(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
-"%(custom_message_sms)s"
 
 #, python-format
 msgid ""
 "ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
 msgstr ""
 "ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ "
-"%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s%(custom_message_sms)s"
+"%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
 
 msgid "As a trustee for the election"
 msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
@@ -1405,11 +1399,11 @@ msgstr "Είσοδος ψηφοφόρου"
 
 msgid ""
 "\n"
-"Please, provide your voter credentials sent to you via Email or SMS\n"
+"Please, provide your voter credentials sent to you via Email\n"
 msgstr ""
 "\n"
 "Συμπληρώστε τα στοιχεία σας για να ψηφίσετε.\n"
-"Τα απαραίτητα στοιχεία θα πρέπει να σας έχουν σταλεί μέσω Email, SMS, ή "
+"Τα απαραίτητα στοιχεία θα πρέπει να σας έχουν σταλεί μέσω Email, ή "
 "άλλου μέσου.\n"
 "Αν δεν τα έχετε λάβει, επικοινωνήστε με την εφορευτική επιτροπή.\n"
 
@@ -1459,9 +1453,6 @@ msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (emai
 
 msgid "Email subject"
 msgstr "Τίτλος ηλεκτρονικού μηνύματος (email)"
-
-msgid "SMS content"
-msgstr "Περιεχόμενο μηνύματος SMS"
 
 msgid "You can edit the contents of the message using the following form."
 msgstr "Μπορείτε να επεξεργαστείτε το μήνυμα στην φόρμα που ακολουθεί."
@@ -1585,9 +1576,6 @@ msgstr "Για να ξεκινήσετε νέα καταμέτρηση πατή�
 
 msgid "Terms of use"
 msgstr "Όροι χρήσης"
-
-#~ msgid "Mobile backend is not set for this election"
-#~ msgstr "Η δυνατότητα αποστολής SMS είναι απενεργοποιημένη"
 
 #~ msgid "Email body"
 #~ msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"

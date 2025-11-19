@@ -45,7 +45,7 @@ from helios import datatypes
 from helios import exceptions
 from helios.datatypes.djangofield import LDObjectField
 
-from heliosauth.models import SMSBackendData, User
+from heliosauth.models import User
 from heliosauth.jsonfield import JSONField
 
 from zeus.core import (numbers_hash, gamma_encoding_max,
@@ -327,9 +327,6 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
                                     choices=OFFICIAL_CHOICES)
     objects = ElectionManager()
 
-    sms_data = models.ForeignKey(SMSBackendData, on_delete=models.CASCADE, default=None, null=True)
-    sms_api_enabled = models.BooleanField(default=False)
-
     cast_notify_once = models.BooleanField(default=True)
 
     cast_consent_text = models.TextField(_("Cast consent test"),
@@ -347,16 +344,6 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         with transaction.atomic():
             for poll in self.polls.all():
                 poll.mixes.filter(mix_order__gt=0).delete()
-
-    @property
-    def sms_credentials(self):
-        if not self.sms_data or not self.sms_data.credentials:
-            return None
-        return self.sms_data.credentials.strip().split(":")
-
-    @property
-    def sms_enabled(self):
-        return self.sms_api_enabled and self.sms_data
 
     @property
     def polls_by_link_id(self):
@@ -737,10 +724,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                          reverse('election_poll_remote_mix', args=(
                             self.election.uuid, self.uuid,
                             self.election.mix_key)))
-
-    @property
-    def sms_enabled(self):
-        return self.election.sms_enabled
 
     def reset_logger(self):
         self._logger = None
@@ -1378,19 +1361,14 @@ def iter_voter_data(voter_data, email_validator=validate_email,
             yield return_dict
             continue
 
-        mobile = voter_fields[5]
-        if mobile:
-            mobile = mobile.replace(' ', '')
-            mobile = mobile.replace('-', '')
-            if len(mobile) < 4 or not mobile[1:].isdigit or \
-                (mobile[0] != '+' and not mobile[0].isdigit()):
-                m = _("Malformed mobile phone number: %s") % mobile
-                raise ValidationError(m)
-        else:
-            mobile = None
+        mobile = None
         return_dict['mobile'] = mobile
 
-        weight = voter_fields[6]
+        if len(voter_fields) == 6:
+            weight = voter_fields[5]
+        else:
+            # Backwards compatibility with previous csv
+            weight = voter_fields[6]
         if weight:
             try:
                 weight = int(weight)
@@ -1614,10 +1592,6 @@ class Voter(HeliosModel, VoterFeatures):
     cast_at = models.DateTimeField(auto_now_add=False, null=True)
     audit_passwords = models.CharField(max_length=200, null=True)
 
-    last_sms_send_at = models.DateTimeField(null=True)
-    last_sms_code = models.CharField(max_length=100, blank=True, null=True)
-    last_sms_status = models.CharField(max_length=255, blank=True, null=True)
-
     last_email_send_at = models.DateTimeField(null=True)
     last_booth_invitation_send_at = models.DateTimeField(null=True)
     last_visit = models.DateTimeField(null=True)
@@ -1634,7 +1608,6 @@ class Voter(HeliosModel, VoterFeatures):
     def contact_methods(self):
         methods_attr_map = (
             ('voter_email', 'email'),
-            ('voter_mobile', 'sms')
         )
         method_enabled = lambda x: x[1] if getattr(self, x[0], None) else None
         return list(filter(bool, list(map(method_enabled, methods_attr_map))))

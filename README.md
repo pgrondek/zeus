@@ -1,11 +1,17 @@
-# The Zeus election server
-
-[![pipeline status](https://gitlab.com/partia_razem_public/zeus/badges/master/pipeline.svg)](https://gitlab.com/partia_razem_public/zeus/-/commits/master)
-[![codecov](https://codecov.io/gh/pwmarcz/zeus/branch/master/graph/badge.svg)](https://codecov.io/gl/partia_razem_public/zeus)
+# The Zeus-ng election server
 
 LICENCE: This code is released under the GPL v3 or later
 
-This is a fork of Ben Adida's Helios server. The differences from Helios are as follows:
+This is a fork of National Infrastructures for Research and Technology Zeus server which is a fork of Ben Adida's 
+Helios server with changes from [partia-razem](https://github.com/partia-razem/zeus). 
+
+Changes introduced in Zeus-ng:
+* Removal of second factor authentication for voter (jwt, shibboleth, oauth2)
+* Added option for election admins to login via external authentication (discord, other oauth2)
+* Added option for voter to login via external authentication
+* Moved configuration to environment variables
+
+The differences from Helios and Zeus are as follows:
 
 * Whereas Helios produces election results, Zeus produces a tally of the ballots cast.
 
