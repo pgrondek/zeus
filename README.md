@@ -16,7 +16,6 @@ This is a fork of Ben Adida's Helios server. The differences from Helios are as 
 * In terms of overall architecture and implementation it is closer to the [original Helios
   implementation](http://static.usenix.org/events/sec08/tech/full_papers/adida/adida.pdf) than Helios v. 3.
 
-
 ## Installation
 
 Here is how to set up Zeus and database on your local machine.
@@ -31,39 +30,39 @@ Here is how to set up Zeus and database on your local machine.
 
 3. (optional) Make sure PostgreSQL accepts connections from Docker:
 
-   * In `/etc/postgresql/.../main/postgresql.conf`, add Docker interface
-     address (172.17.0.1) to `listen_addresses`, e.g.:
+    * In `/etc/postgresql/.../main/postgresql.conf`, add Docker interface
+      address (172.17.0.1) to `listen_addresses`, e.g.:
 
-     ```
-     listen_addresses = 'localhost,172.17.0.1'
-     ```
+      ```
+      listen_addresses = 'localhost,172.17.0.1'
+      ```
 
-   * In `/etc/postgresql/.../main/pg_hba.conf`, add a line for Zeus to be able
-     to connect from all Docker's networks:
+    * In `/etc/postgresql/.../main/pg_hba.conf`, add a line for Zeus to be able
+      to connect from all Docker's networks:
 
-     ```
-     # TYPE  DATABASE   USER  ADDRESS      METHOD
-     ...
-     host    zeus       zeus  172.0.0.0/8  md5
-     ```
+      ```
+      # TYPE  DATABASE   USER  ADDRESS      METHOD
+      ...
+      host    zeus       zeus  172.0.0.0/8  md5
+      ```
 
-     For running tests, you need to allow access to additional databases:
+      For running tests, you need to allow access to additional databases:
 
-     ```
-     host    all       zeus  172.0.0.0/8  md5
-     ```
+      ```
+      host    all       zeus  172.0.0.0/8  md5
+      ```
 
-   * Restart Postgres:
+    * Restart Postgres:
 
-     ```
-     sudo systemctl restart postgresql.service
-     ```
+      ```
+      sudo systemctl restart postgresql.service
+      ```
 
-   * Verify if you can connect from Docker:
+    * Verify if you can connect from Docker:
 
-     ```
-     docker run --rm -it postgres:latest psql -h 172.17.0.1 -U zeus zeus
-     ```
+      ```
+      docker run --rm -it postgres:latest psql -h 172.17.0.1 -U zeus zeus
+      ```
 
 5. Set up the initial database: run migrations, create user and institution:
 
@@ -141,3 +140,34 @@ SSL, etc.
 If you update the code, execute database migrations before restarting:
 
     docker-compose -f docker-compose-prod.yml run --rm prod python manage.py migrate
+
+## Environment properties
+
+### Oauth authentication
+
+Mainly supported oauth authentication is `discord`, there is also a `other` client but it's not tested and can have a
+missing functionality
+
+| ENV                        | Note                                                      | Default   |
+|----------------------------|-----------------------------------------------------------|-----------|
+| OAUTH_ENABLED              | Enable oauth authentication                               | `False`   |
+| OAUTH_TYPE                 | Oauth client type, supported values: `discord`, `other`*  | `discord` |
+| OAUTH_CLIENT_ID            | Oauth client id                                           | `None`    |
+| OAUTH_CLIENT_SECRET        | Oauth client secret                                       | `None`    |
+| OAUTH_CREATE_ADMIN         | Create voting admin user in zeus if account doesn't exist | `True`    |
+| OAUTH_ADMIN_INSTITUTION_ID | In which institution should we create admin user          | 1         |
+
+#### Discord client properties
+
+| ENV                         | Note                                                   | Example              | Default |
+|-----------------------------|--------------------------------------------------------|----------------------|---------|
+| OAUTH_DISCORD_SERVER_ID     | Required discord server/guild for user to authenticate | `123456789123456789` | None    |
+| OAUTH_DISCORD_ADMIN_ROLE_ID | User role to create                                    | `123456789123456789` | None    |
+
+#### Other client properties
+
+| ENV                     | Note                                                          | Example                                              |
+|-------------------------|---------------------------------------------------------------|------------------------------------------------------|
+| OAUTH_AUTHORIZATION_URL | Url where application will redirect user to get authorization | `https://authentik.company/application/o/authorize/` | 
+| OAUTH_TOKEN_URL         | Url where application will get user token for challange token | `https://authentik.company/application/o/token/`     | 
+| OAUTH_USER_INFO_URL     | Url where application will get user info                      | `https://authentik.company/application/o/userinfo/`  | 

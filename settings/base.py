@@ -18,6 +18,7 @@ ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
 TESTING = False
 DEBUG = False
 ZEUS_TASK_DEBUG = False
+CELERY_TASK_ALWAYS_EAGER = False
 
 ADMINS = [
     ('Zeus admin', 'zeus.admin@localhost'),
@@ -41,13 +42,17 @@ DATABASES = {
 }
 
 OAUTH = {
-    'ENABLED': False,
-    'CLIENT_ID': '',
-    'CLIENT_SECRET': '',
-    'TYPE': 'discord',
-    'TOKEN_URL': 'https://authentik.company/application/o/token/',
-    'AUTHORIZATION_URL': 'https://authentik.company/application/o/authorize/',
-    'USER_INFO_URL': 'https://authentik.company/application/o/userinfo/',
+    'ENABLED': get_from_env('OAUTH_ENABLED', False),
+    'TYPE': get_from_env('OAUTH_TYPE', 'discord'),
+    'CLIENT_ID': get_from_env('OAUTH_CLIENT_ID', None),
+    'CLIENT_SECRET': get_from_env('OAUTH_CLIENT_SECRET', None),
+    'DISCORD_SERVER_ID': get_from_env('OAUTH_DISCORD_SERVER_ID', None),
+    'DISCORD_ADMIN_ROLE_ID': get_from_env('OAUTH_DISCORD_ADMIN_ROLE_ID', None),
+    'AUTHORIZATION_URL': get_from_env('OAUTH_AUTHORIZATION_URL', None),
+    'TOKEN_URL': get_from_env('OAUTH_TOKEN_URL', None),
+    'USER_INFO_URL': get_from_env('OAUTH_USER_INFO_URL', None),
+    'CREATE_ADMIN_IF_DOES_NOT_EXIST': get_from_env('OAUTH_CREATE_ADMIN', True),
+    'CREATE_ADMIN_INSTITUTION_ID': get_from_env('OAUTH_ADMIN_INSTITUTION_ID', 1),
 }
 
 # Local time zone for this installation. Choices can be found here:
