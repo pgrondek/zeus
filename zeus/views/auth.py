@@ -86,8 +86,8 @@ def oauth2_admin_login(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
         try:
-            # In User model user_id is used to send messages, so we're using user_id as email
-            user_id = oauth2.get_email()
+            email, discord_id, global_name = oauth2.get_user_info()
+            user_id = f'discord_{discord_id}'
             if not oauth2.validate_access('admin'):
                 messages.error(request, 'You\'re not in required discord server or you don\'t have a required role')
                 return HttpResponseRedirect(reverse('error',
@@ -105,7 +105,9 @@ def oauth2_admin_login(request):
                 new_user = User()
                 new_user.user_type = "password" # lol
                 new_user.admin_p = True
-                new_user.info = {'name': user_id, 'authorization': 'discord'}
+                new_user.info = {'name': global_name, 'authorization': 'discord', 'discord_id': discord_id}
+                new_user.email = email
+                new_user.name = global_name
                 new_user.user_id = user_id
                 new_user.superadmin_p = False
                 new_user.management_p = False

@@ -27,7 +27,8 @@
   <thead>
     <tr>
         <th>ID</th>
-        <th>User ID</b></td>
+        <th>User ID</th>
+        <th>Email</th>
         <th>{% trans "Name" %}</th>
         <th>{% trans "Institution" %}</th>
         <th>{% trans "User Groups" %}</th>
@@ -41,6 +42,7 @@
     <tr>
         <td>{{user.id}}</td>
         <td>{{user.user_id}}</td>
+        <td>{{user.email}}</td>
         <td>{{user.name}}</td>
         <td>{{user.institution.name}}</td>
         <td>{{user.groups_display}}</td>

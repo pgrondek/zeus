@@ -54,6 +54,7 @@ class User(models.Model):
     institution = models.ForeignKey('zeus.Institution', on_delete=models.CASCADE, null=True)
     user_groups = models.ManyToManyField(UserGroup)
     name = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=250, null=True)
 
     # other properties
     info = JSONField()

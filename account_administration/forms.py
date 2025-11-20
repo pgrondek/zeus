@@ -27,13 +27,14 @@ class userForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['user_id', 'name', 'institution', 'is_disabled', 'user_groups', 'management_p']
+        fields = ['user_id', 'name', 'email', 'institution', 'is_disabled', 'user_groups', 'management_p']
 
     def __init__(self, logged_user, *args, **kwargs):
         super(userForm, self).__init__(*args, **kwargs)
         self.logged_user = logged_user
         self.fields['user_id'].label = "User ID"
         self.fields['name'].label = _("Name")
+        self.fields['email'].label = _("Email")
         self.fields['institution'].label = _("Institution")
         self.fields['is_disabled'].label = _("Disable account")
         self.fields['management_p'].label = _("Helpdesk user")
@@ -47,6 +48,7 @@ class userForm(ModelForm):
         initial=UserGroup.objects.filter(name="default"),
         widget=forms.CheckboxSelectMultiple
     )
+    email = forms.EmailField(required=True)
 
     def clean_user_id(self):
         user_id = self.cleaned_data['user_id']
