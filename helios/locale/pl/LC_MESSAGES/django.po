@@ -337,7 +337,7 @@ msgid "Confirm election cancel"
 msgstr "Potwierdź odwołanie wyborów"
 
 msgid "Back"
-msgstr "Z powrotem"
+msgstr "Cofnij"
 
 msgid "Election close message"
 msgstr "Komunikat zamknięcia wyborów"
