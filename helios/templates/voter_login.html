@@ -43,9 +43,9 @@ Please, provide your voter credentials sent to you via Email
     <input class="button" type="submit" value="{% trans "Login" %}" />
 </div>
 </form>
-{% if settings.OAUTH.ENABLED %}
+{% if settings.OAUTH.ENABLED and settings.OAUTH.VOTER_LOGIN_ENABLED %}
     <form action="/auth/auth/voter-oauth" method="get">
-        <input class="button" type="submit" value="Login via Discord" />
+        <input class="button" type="submit" value="{% trans "Login via Discord" %} "/>
     </form>
 {% endif %}
 </div>

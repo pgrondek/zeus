@@ -56,6 +56,7 @@ DATABASES = {
 
 OAUTH = {
     'ENABLED': get_from_env('OAUTH_ENABLED', False),
+    'VOTER_LOGIN_ENABLED': get_from_env('OAUTH_VOTER_LOGIN_ENABLED', False),
     'TYPE': get_from_env('OAUTH_TYPE', 'discord'),
     'CLIENT_ID': get_from_env('OAUTH_CLIENT_ID', None),
     'CLIENT_SECRET': get_from_env('OAUTH_CLIENT_SECRET', None),

@@ -1,32 +1,27 @@
 
 import logging
-import six.moves.urllib.request
+
 import six.moves.urllib.error
 import six.moves.urllib.parse
+import six.moves.urllib.request
 from django.conf import settings
-
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
-from django.contrib import messages
-from django.shortcuts import redirect
-
-from helios.models import Poll
-from heliosauth.models import User, UserGroup
-from zeus import auth
-from zeus.models import Institution
-from zeus.oauth2_login import Oauth2Config
-from zeus.utils import poll_reverse
-from zeus.forms import ChangePasswordForm, VoterLoginForm
-
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
+from helios.models import Poll, Voter
 from helios.view_utils import render_template
+from heliosauth.models import User, UserGroup
 from zeus import auth
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 from zeus.forms import LoginForm
+from zeus.models import Institution
 from zeus.utils import poll_reverse
 
 logger = logging.getLogger(__name__)
@@ -77,6 +72,7 @@ def oauth2_admin_login(request):
 
     logger.info("Oauth login is: %s", settings.OAUTH['ENABLED'])
     if not settings.OAUTH['ENABLED']:
+        messages.error(request, _('Discord admin login not enabled'))
         return HttpResponseRedirect(reverse('login'))
 
     oauth_config = oauth2_login.get_oauth2_config()
@@ -89,7 +85,7 @@ def oauth2_admin_login(request):
             email, discord_id, global_name = oauth2.get_user_info()
             user_id = f'discord_{discord_id}'
             if not oauth2.validate_access('admin'):
-                messages.error(request, 'You\'re not in required discord server or you don\'t have a required role')
+                messages.error(request, _('You\'re not in required discord server or you don\'t have a required role'))
                 return HttpResponseRedirect(reverse('error',
                                                     kwargs={'code': 400}))
 
@@ -99,7 +95,7 @@ def oauth2_admin_login(request):
                 return HttpResponseRedirect(reverse('admin_home'))
             except User.DoesNotExist:
                 if not settings.OAUTH['CREATE_ADMIN_IF_DOES_NOT_EXIST']:
-                    messages.error(request, 'oauth2 user does not match admin')
+                    messages.error(request, _('Could not find admin account'))
                     return HttpResponseRedirect(reverse('home', kwargs={'code': 400}))
 
                 new_user = User()
@@ -147,7 +143,7 @@ def change_password(request):
     if not user.is_admin:
         raise PermissionDenied('32')
     if not user._user.local_account:
-        messages.error(request, 'You login trough external authentication, you cannot set password')
+        messages.error(request, _('You login trough external authentication, you cannot set password'))
         return HttpResponseRedirect(reverse('error',
                                             kwargs={'code': 403}))
 
@@ -189,18 +185,18 @@ def oauth2_login(request):
             else:
                 poll.logger.info("[thirdparty] %s cannot resolve email from %r",
                                  poll.remote_login_display, data)
-                messages.error(request, 'oauth2 user does not match voter')
+                messages.error(request, _('Cannot confirm voter email'))
                 return HttpResponseRedirect(reverse('error',
                                                     kwargs={'code': 400}))
         except six.moves.urllib.error.HTTPError as e:
             poll.logger.exception(e)
-            messages.error(request, 'oauth2 error')
+            messages.error(request, _('Discord error'))
             return HttpResponseRedirect(reverse('error',
                                                 kwargs={'code': 400}))
     else:
         poll.logger.info("[thirdparty] oauth2 '%s' can_exchange failed",
                          poll.remote_login_display)
-        messages.error(request, 'oauth2 exchange failed')
+        messages.error(request, _('Discord error'))
         return HttpResponseRedirect(reverse('error', kwargs={'code': 400}))
 
 
@@ -342,9 +338,10 @@ def jwt_login(request):
 
 @auth.unauthenticated_user_required
 def voter_oauth_login(request):
-    if not settings.OAUTH['ENABLED']:
-        logger.error("Oauth not enabled")
-        return HttpResponseRedirect(reverse('login'))
+    if not settings.OAUTH['ENABLED'] or not settings.OAUTH['VOTER_LOGIN_ENABLED']:
+        logger.error("Discord voter login not enabled")
+        messages.error(request, _('Discord voter login not enabled'))
+        return HttpResponseRedirect(reverse('home'))
 
     if request.session.get('oauth2_voter_access_token'):
         return HttpResponseRedirect(reverse('voter_oauth_polls'))
@@ -358,7 +355,7 @@ def voter_oauth_login(request):
         exchange_url = oauth2.get_exchange_url()
         oauth2.exchange(exchange_url)
         if not oauth2.validate_access('voter'):
-            messages.error(request, 'You\'re not in required discord server')
+            messages.error(request, _('You\'re not in required discord server'))
             return HttpResponseRedirect(reverse('error',
                                                 kwargs={'code': 400}))
         try:
@@ -383,7 +380,7 @@ def voter_oauth_logout(request):
 
 def voter_oauth_polls(request):
     if not request.session.get('oauth2_voter_access_token'):
-        messages.error(request, 'Missing access token')
+        messages.error(request, _('Missing access token'))
         return HttpResponseRedirect(reverse('voter_oauth_login'))
 
     from zeus import oauth2_login

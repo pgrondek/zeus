@@ -1270,6 +1270,36 @@ msgstr "Kontakt"
 msgid "Login"
 msgstr "Logowanie"
 
+msgid "Login via Discord"
+msgstr "Logowanie przez Discorda"
+
+msgid "Discord voter login not enabled"
+msgstr "Logowanie przez Discorda nie jest włączone dla wyborców"
+
+msgid "Discord admin login not enabled"
+msgstr "Logowanie przez Discorda nie jest włączone dla administratorów wyborów"
+
+msgid "You\'re not in required discord server"
+msgstr "Nie jesteś na wymaganym serwerze discorda"
+
+msgid "You\'re not in required discord server or you don\'t have a required role"
+msgstr "Nie jesteś na wymaganym serwerze discorda albo nie posiadasz wymaganych ról"
+
+msgid "Could not find admin account"
+msgstr "Nie znaleziono konta administratora wyborów"
+
+msgid "Missing access token"
+msgstr "Brak tokenu dostępowego"
+
+msgid "You login trough external authentication, you cannot set password"
+msgstr "Logujesz się przez autoryzację zewnętrzną, nie możesz ustawić"
+
+msgid "Cannot confirm voter email"
+msgstr "Nie można potwierdzić adres email osoby głosującej"
+
+msgid "Discord error"
+msgstr "Błąd Discorda"
+
 msgid ""
 "\n"
 "This is a login form for election administrators only.\n"

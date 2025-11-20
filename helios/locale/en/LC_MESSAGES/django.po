@@ -1211,6 +1211,9 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
+msgid "Login via Discord"
+msgstr ""
+
 msgid ""
 "\n"
 "This is a login form for election administrators only.\n"

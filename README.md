@@ -2,10 +2,11 @@
 
 LICENCE: This code is released under the GPL v3 or later
 
-This is a fork of National Infrastructures for Research and Technology Zeus server which is a fork of Ben Adida's 
-Helios server with changes from [partia-razem](https://github.com/partia-razem/zeus). 
+This is a fork of National Infrastructures for Research and Technology Zeus server which is a fork of Ben Adida's
+Helios server with changes from [partia-razem](https://github.com/partia-razem/zeus).
 
 Changes introduced in Zeus-ng:
+
 * Removal of second factor authentication for voter (jwt, shibboleth, oauth2)
 * Added option for election admins to login via external authentication (discord, other oauth2)
 * Added option for voter to login via external authentication
@@ -204,6 +205,7 @@ missing functionality
 | ENV                        | Note                                                      | Default   |
 |----------------------------|-----------------------------------------------------------|-----------|
 | OAUTH_ENABLED              | Enable oauth authentication                               | `False`   |
+| OAUTH_VOTER_LOGIN_ENABLED  | Enable oauth authentication for voters                    | `False`   |
 | OAUTH_TYPE                 | Oauth client type, supported values: `discord`, `other`*  | `discord` |
 | OAUTH_CLIENT_ID            | Oauth client id                                           | `None`    |
 | OAUTH_CLIENT_SECRET        | Oauth client secret                                       | `None`    |
