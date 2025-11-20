@@ -11,12 +11,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email, ValidationError
-if six.PY2:
-    from backports.csv import (Sniffer, excel, Error as csvError,
-                               reader as imported_csv_reader)
-else:
-    from csv import (Sniffer, excel, Error as csvError,
-                     reader as imported_csv_reader)
+from csv import (Sniffer, excel, Error as csvError,
+                 reader as imported_csv_reader)
 
 
 def election_trustees_to_text(election):
