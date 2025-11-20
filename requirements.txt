@@ -4,31 +4,31 @@
 #
 #    pip-compile
 #
-amqp==5.0.6
+amqp==5.3.1
     # via kombu
 apipkg==1.5
     # via execnet
-asgiref==3.3.4
+asgiref==3.6.0
     # via django
 attrs==21.2.0
     # via pytest
 backcall==0.2.0
     # via ipython
-billiard==3.6.4.0
+billiard==4.2.1
     # via celery
-celery[redis]==5.1.0
+celery[redis]==5.5.3
     # via -r requirements.in
 certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
-click-didyoumean==0.0.3
+click-didyoumean==0.3.0
     # via celery
 click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-click==7.1.2
+click==8.1.2
     # via
     #   celery
     #   click-didyoumean
@@ -49,13 +49,13 @@ decorator==5.0.9
     #   traitlets
 dj-pagination==2.5.0
     # via -r requirements.in
-django==3.2.4
+django==4.2.16
     # via -r requirements.in
 execnet==1.8.1
     # via pytest-xdist
 flake8==3.9.2
     # via -r requirements.in
-gmpy2==2.1.5
+gmpy2==2.2.1
     # via -r requirements.in
 idna==2.10
     # via requests
@@ -69,7 +69,7 @@ ipython==7.24.1
     # via -r requirements.in
 jedi==0.18.0
     # via ipython
-kombu==5.1.0
+kombu==5.5.2
     # via celery
 loky==2.9.0
     # via -r requirements.in
@@ -136,9 +136,9 @@ pytz==2021.1
     #   django
 pyyaml==6.0.3
     # via -r requirements.in
-redis==3.5.3
+redis==4.5.2
     # via celery
-reportlab==3.5.67
+reportlab==3.6.13
     # via -r requirements.in
 requests==2.25.1
     # via codecov
@@ -162,7 +162,7 @@ urllib3==1.26.5
     # via requests
 uwsgi==2.0.31
     # via -r requirements.in
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery

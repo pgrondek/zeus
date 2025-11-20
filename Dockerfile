@@ -9,9 +9,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && apt-get -yy install \
     build-essential \
-    python3.10 \
-    python3.10-dev \
-    python3.10-venv \
+    python3.11 \
+    python3.11-dev \
+    python3.11-venv \
     libgmp-dev \
     libmpfr-dev \
     libmpc-dev \
@@ -28,7 +28,7 @@ WORKDIR /home/user
 
 # Create and activate virtualenv
 ENV VIRTUAL_ENV=/home/user/env
-RUN python3.10 -m venv "$VIRTUAL_ENV"
+RUN python3.11 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN mkdir zeus
@@ -57,6 +57,6 @@ ENV DJANGO_SETTINGS_MODULE=settings.base
 RUN ./compile-translations.sh
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+RUN python3.11 manage.py collectstatic --noinput
 
 EXPOSE 8000
