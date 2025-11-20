@@ -9,9 +9,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && apt-get -yy install \
     build-essential \
-    python3.8 \
-    python3.8-dev \
-    python3-venv \
+    python3.9 \
+    python3.9-dev \
+    python3.9-venv \
     libgmp-dev \
     libmpfr-dev \
     libmpc-dev \
@@ -27,7 +27,7 @@ WORKDIR /home/user
 
 # Create and activate virtualenv
 ENV VIRTUAL_ENV=/home/user/env
-RUN python3.8 -m venv "$VIRTUAL_ENV"
+RUN python3.9 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN mkdir zeus
