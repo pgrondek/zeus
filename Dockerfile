@@ -2,20 +2,21 @@
 # zeus_dev (for mounting the source code)
 #####
 
-FROM ubuntu:20.04 AS zeus_dev
+FROM ubuntu:22.04 AS zeus_dev
 
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && apt-get -yy install \
     build-essential \
-    python3.9 \
-    python3.9-dev \
-    python3.9-venv \
+    python3.10 \
+    python3.10-dev \
+    python3.10-venv \
     libgmp-dev \
     libmpfr-dev \
     libmpc-dev \
-    postgresql-client-12 \
+    postgresql-client \
+    postgresql-common \
     moreutils \
     gettext \
     fonts-open-sans
@@ -27,7 +28,7 @@ WORKDIR /home/user
 
 # Create and activate virtualenv
 ENV VIRTUAL_ENV=/home/user/env
-RUN python3.9 -m venv "$VIRTUAL_ENV"
+RUN python3.10 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN mkdir zeus

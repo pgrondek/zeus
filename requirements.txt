@@ -55,7 +55,7 @@ execnet==1.8.1
     # via pytest-xdist
 flake8==3.9.2
     # via -r requirements.in
-gmpy2==2.0.8
+gmpy2==2.1.5
     # via -r requirements.in
 idna==2.10
     # via requests
@@ -87,7 +87,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==8.2.0
+pillow==10.3.0
     # via reportlab
 pip-tools==6.1.0
     # via -r requirements.in
@@ -97,7 +97,7 @@ prompt-toolkit==3.0.18
     # via
     #   click-repl
     #   ipython
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.9
     # via -r requirements.in
 ptyprocess==0.7.0
     # via pexpect
@@ -134,7 +134,7 @@ pytz==2021.1
     # via
     #   celery
     #   django
-pyyaml==5.4.1
+pyyaml==6.0.3
     # via -r requirements.in
 redis==3.5.3
     # via celery
