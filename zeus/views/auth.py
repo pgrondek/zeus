@@ -146,6 +146,10 @@ def change_password(request):
     # only admin users can change password
     if not user.is_admin:
         raise PermissionDenied('32')
+    if not user._user.local_account:
+        messages.error(request, 'You login trough external authentication, you cannot set password')
+        return HttpResponseRedirect(reverse('error',
+                                            kwargs={'code': 403}))
 
     password_changed = request.GET.get('password_changed', None)
     form = ChangePasswordForm(user)

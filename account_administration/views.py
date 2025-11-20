@@ -1,4 +1,4 @@
-
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -186,6 +186,11 @@ def reset_password(request):
     uid = sanitize_get_param(uid)
     user = get_user(uid)
     context = {"u_data": user}
+    if not user.local_account:
+        messages.error(request, 'Cannot set password for externally authenticated user')
+        return HttpResponseRedirect(reverse('error',
+                                            kwargs={'code': 403}))
+
     return render_template(
         request,
         'account_administration/reset_password',

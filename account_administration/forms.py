@@ -41,6 +41,12 @@ class userForm(ModelForm):
 
         if not kwargs['instance']:
             self.fields.pop('is_disabled')
+
+        if kwargs['instance']:
+            user = kwargs['instance']
+            if not user.local_account:
+                self.fields['user_id'].widget.attrs['readonly'] = True
+
     name = forms.CharField(required=False)
     institution = forms.CharField(required=True)
     user_groups = forms.ModelMultipleChoiceField(

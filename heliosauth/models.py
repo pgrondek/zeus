@@ -82,6 +82,12 @@ class User(models.Model):
         unique_together = (('user_type', 'user_id'),)
 
     @property
+    def local_account(self):
+        if 'authorization' in self.info:
+            return False
+        return True
+
+    @property
     def groups_display(self):
         return ",".join([g.name for g in self.user_groups.filter()])
 

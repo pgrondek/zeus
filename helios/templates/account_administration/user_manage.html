@@ -32,16 +32,20 @@
 {% if u_data.management_p or u_data.superadmin_p %}
 {% if user_type == 'superadmin'%}
   <br>
+{% if u_data.local_account %}
   <a href={% url "reset_password" %}?uid={{u_data.id}}>{% trans "Reset Password" %}</a>
   </br></br>
+{% endif %}
   <a href={% url "create_user" %}?edit_id={{u_data.id}}>{% trans "Edit" %}</a>
   </br></br>
 {% endif %}
 {%else%}
   <br>
+{% if u_data.local_account %}
   <a href={% url "reset_password" %}?uid={{u_data.id}}>
   {% trans "Reset Password" %}</a>
   </br></br>
+{% endif %}
   <a href="{% url "create_user" %}?edit_id={{u_data.id}}">{% trans "Edit" %}</a>
   </br></br>
 {% endif %}
