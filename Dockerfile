@@ -2,16 +2,19 @@
 # zeus_dev (for mounting the source code)
 #####
 
-FROM ubuntu:22.04 AS zeus_dev
+FROM ubuntu:24.04 AS zeus_dev
 
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && apt-get -yy install \
     build-essential \
-    python3.11 \
-    python3.11-dev \
-    python3.11-venv \
+    python3.12 \
+    python3.12-dev \
+    python3.12-venv \
+    libart-2.0-dev \
+    libfreetype6-dev \
+    libjpeg-dev \
     libgmp-dev \
     libmpfr-dev \
     libmpc-dev \
@@ -19,7 +22,8 @@ RUN apt-get -y update && apt-get -yy install \
     postgresql-common \
     moreutils \
     gettext \
-    fonts-open-sans
+    fonts-open-sans \
+    zlib1g-dev
 
 RUN useradd --create-home --shell /bin/bash user
 
@@ -28,7 +32,7 @@ WORKDIR /home/user
 
 # Create and activate virtualenv
 ENV VIRTUAL_ENV=/home/user/env
-RUN python3.11 -m venv "$VIRTUAL_ENV"
+RUN python3.12 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN mkdir zeus
@@ -57,6 +61,6 @@ ENV DJANGO_SETTINGS_MODULE=settings.base
 RUN ./compile-translations.sh
 
 # Collect static files
-RUN python3.11 manage.py collectstatic --noinput
+RUN python3.12 manage.py collectstatic --noinput
 
 EXPOSE 8000
