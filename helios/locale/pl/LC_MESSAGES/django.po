@@ -1197,7 +1197,7 @@ msgid "To submit your vote, follow the link below"
 msgstr "Aby zagłosować, kliknij na łącze poniżej"
 
 msgid "Information:"
-msgstr "Informacja:"
+msgstr "Uwaga:"
 
 msgid "You can vote more than once. Only your last vote will be counted."
 msgstr "Możesz głosować więcej niż raz. Tylko ostatni głos zostanie policzony."

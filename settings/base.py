@@ -233,10 +233,10 @@ AUTH_DEFAULT_AUTH_SYSTEM = None
 EMAIL_SUBJECT_PREFIX = '[ZEUS] '
 DEFAULT_FROM_EMAIL = get_from_env('DEFAULT_FROM_EMAIL', 'zeus.from@localhost')
 DEFAULT_FROM_NAME = get_from_env('DEFAULT_FROM_NAME', 'Zeus admin')
-SERVER_EMAIL = '%s <%s>' % (DEFAULT_FROM_NAME, DEFAULT_FROM_EMAIL)
+SERVER_EMAIL = '"%s" <%s>' % (DEFAULT_FROM_NAME, DEFAULT_FROM_EMAIL)
 
 HELP_EMAIL_ADDRESS = get_from_env('HELP_EMAIL_ADDRESS', 'zeus.help@localhost')
-if os.environ.get('EMAIL_HOST'):
+if not os.environ.get('EMAIL_HOST') is None:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = get_from_env('EMAIL_HOST', 'localhost')
     EMAIL_PORT = get_from_env('EMAIL_PORT', 587)
