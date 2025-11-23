@@ -13,6 +13,5 @@ urlpatterns = [
     re_path(r'^resources/$', site.resources, name='site_resources'),
     re_path(r'^contact/$', site.contact, name='site_contact'),
     re_path(r'^stats/$', site.stats, name='site_stats'),
-    re_path(r'^demo$', site.demo, name='site_demo'),
     re_path(r'^error/(?P<code>[0-9]+)$', site.error, name='error')
 ]

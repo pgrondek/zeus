@@ -1090,31 +1090,6 @@ msgstr ""
 msgid "Thank you for voting"
 msgstr ""
 
-msgid ""
-"Greetings,\n"
-"\n"
-"You can use the following credentials to access a demo account as an\n"
-"election operator at:\n"
-"\n"
-msgstr ""
-
-msgid "The total voters across all elections for demo accounts is limited to"
-msgstr ""
-
-msgid ""
-"Demo accounts are periodically purged.\n"
-"\n"
-"If you need a normal account, or have any questions,\n"
-"please contact us at helpdesk@zeus.grnet.gr.\n"
-"\n"
-"--\n"
-"https://zeus.grnet.gr/\n"
-"Zeus Elections\n"
-msgstr ""
-
-msgid "Demo account for"
-msgstr ""
-
 msgid "Legitimate recipient:"
 msgstr ""
 

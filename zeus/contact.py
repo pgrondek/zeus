@@ -2,7 +2,7 @@
 from email.utils import formataddr
 from django.conf import settings
 from django.utils import translation
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from helios.view_utils import render_template_raw
 
 
@@ -67,15 +67,21 @@ class ContactBackend():
                 if subject_tpl:
                     subject = backend.render_template(subject_tpl, the_vars)
                 body = backend.render_template(body_tpl, the_vars)
-            backend.notify(voter, id, subject, body, attachments, sent_hook)
+                logger.error("Template ", body_tpl)
+                if body_tpl == 'vote_body.txt':
+                    html_body = backend.render_template('vote_body.html', the_vars)
+                else:
+                    html_body = None
+
+            backend.notify(voter, id, subject, body, attachments, sent_hook, html_body)
             notified = True
 
         if not notified:
             logger.error("Voter not notified %r" % (voter.voter_login_id))
 
-    def notify(self, voter, id, subject, body, attachments, sent_hook):
+    def notify(self, voter, id, subject, body, attachments, sent_hook, html_body=None):
         try:
-            result, error = self.do_notify(voter, id, subject, body, attachments)
+            result, error = self.do_notify(voter, id, subject, body, attachments, html_body)
         except ContactBackend.Error as e:
             self.logger.exception(e)
             return False
@@ -83,13 +89,17 @@ class ContactBackend():
 
 class EmailBackend(ContactBackend):
 
-    def do_notify(self, voter, id, subject, body, attachments):
+    def do_notify(self, voter, id, subject, body, attachments, html_body=None):
         self.logger.info("Notifying voter %r for '%r' via email (%r)" % (voter.voter_login_id, id, voter.voter_email))
         subject = subject.replace("\n", "")
         if attachments and len(attachments) > 0:
             name = "%s %s" % (voter.voter_name, voter.voter_surname)
             to = formataddr((name, voter.voter_email))
-            message = EmailMessage(subject, body, settings.SERVER_EMAIL, [to])
+            if html_body is None:
+                message = EmailMessage(subject, body, settings.SERVER_EMAIL, [to])
+            else:
+                message = EmailMultiAlternatives(subject, body, settings.SERVER_EMAIL, [to])
+                message.attach_alternative(html_body, "text/html")
             for attachment in attachments:
                 message.attach(*attachment)
             try:

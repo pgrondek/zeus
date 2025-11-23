@@ -4,7 +4,7 @@ Zeus quick install guide
 This guide focuses on providing detailed instructions for users who want to
 install and deploy the ``zeus`` voting platform on their own machine. The
 following steps were tested on a fresh installation of Ubuntu 12.04 LTS but
-should also work for any Debian/Ubuntu based distro that provides the required 
+should also work for any Debian/Ubuntu based distro that provides the required
 packages.
 
 
@@ -24,7 +24,7 @@ Install prerequisite packages
 Create a new database
 *********************
 
-Create a postgres user and a database owned by that user. Keep reference to 
+Create a postgres user and a database owned by that user. Keep reference to
 username, password and database name, since you will need to place them in
 your local zeus configuration file::
 
@@ -66,16 +66,6 @@ Configure zeus
     * ``SITE_DOMAIN``
     * ``SECRET_KEY``
 
-* Create an instance of the ``Institution`` model in order to be able to create
-  demo accounts::
-
-    $ cd /srv/zeus-server
-    $ python manage.py shell
-    >>> from zeus.models.zeus_models import Institution
-    >>> Institution.objects.create(name="DEMO")
-    >>> exit()
-
-
 Apache configuration
 ********************
 
@@ -90,14 +80,14 @@ Apache configuration
 
   $ sudo cp /srv/zeus-server/conf/apache2_zeus /etc/apache2/sites-available/zeus
 
-* Edit ``/etc/apache2/sites-available/zeus`` and replace the domains to match your 
+* Edit ``/etc/apache2/sites-available/zeus`` and replace the domains to match your
   deployment.
 
 * Enable required mods::
 
-  $ sudo a2enmod rewrite 
+  $ sudo a2enmod rewrite
   $ sudo a2enmod ssl
-  $ sudo a2enmod xsendfile 
+  $ sudo a2enmod xsendfile
   $ sudo a2enmod proxy
   $ sudo a2enmod proxy_http
   $ sudo a2enmod proxy_connect
@@ -110,7 +100,7 @@ Apache configuration
 Celery configuration
 ********************
 
-* Since celery package does not contain an ``init.d`` script we should create 
+* Since celery package does not contain an ``init.d`` script we should create
   and configure one::
 
   $ sudo cp /srv/zeus-server/conf/celeryd_debian_default /etc/default/celeryd
@@ -137,7 +127,7 @@ Prepare zeus directories
 
 Zeus requires the following directories to exist with the specified
 permissions::
-  
+
   $ sudo mkdir -p /usr/share/zeus/zeus_mixes
   $ sudo mkdir -p /usr/share/zeus_proofs
   $ sudo mkdir -p /var/run/zeus-celery
@@ -161,7 +151,7 @@ Initialize zeus database
 Create zeus users
 *****************
 
-Create an election admin user. This will be used later on to create your first 
+Create an election admin user. This will be used later on to create your first
 election.
 
 .. code-block:: bash
@@ -184,8 +174,8 @@ Restart all services
 Login and create an election
 *****************************
 
-At this point you should be able to access the zeus platform from the domain 
-you chose to deploy to. You can login using the credentials you provided to 
+At this point you should be able to access the zeus platform from the domain
+you chose to deploy to. You can login using the credentials you provided to
 the user creation step above at the following url::
 
   https://<DOMAIN_NAME>/auth/password/login
@@ -193,4 +183,3 @@ the user creation step above at the following url::
 and create your first election by visiting::
 
   https://<DOMAIN_NAME>/helios/elections/new
-
