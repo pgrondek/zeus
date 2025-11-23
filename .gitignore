@@ -30,3 +30,7 @@ htmlcov/
 env/
 .env
 volumes
+
+node_modules/
+email/out/
+email/.react-email/

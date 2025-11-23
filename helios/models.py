@@ -637,10 +637,10 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
                 'admins': admins,
                 'subject': subject,
             }
-
+            html_body = render_to_string('email/admin_mail.html', context)
             body = render_to_string("email/admin_mail.txt", context)
             subject = render_to_string("email/admin_mail_subject.txt", context)
-            mail_admins(subject.replace("\n", ""), body)
+            mail_admins(subject.replace("\n", ""), body, html_message=html_body)
 
     def save(self, *args, **kwargs):
         if not self.uuid:

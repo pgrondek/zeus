@@ -657,6 +657,9 @@ msgstr "Nie wysłano pliku"
 msgid "Time to Vote"
 msgstr "Czas głosowania"
 
+msgid "Vote now"
+msgstr "Głosuj teraz"
+
 msgid "Additional Info"
 msgstr "Dodatkowe informacje"
 
