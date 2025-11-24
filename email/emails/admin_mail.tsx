@@ -1,20 +1,10 @@
 import {
-    Body,
-    Button,
-    Container,
-    Head,
-    Hr,
-    Html,
-    Img,
-    Link,
-    Preview,
     Section,
     Text,
 } from '@react-email/components';
 
-import * as fs from "fs";
 import BaseTemplate from "../components/baseTemplate";
-import Trans from "../components/trans";
+import {Trans} from "../components/jinja2";
 
 export const AdminMail = () => (
     <BaseTemplate title={`{% trans \"System message\" %}: {{msg}}`}>
@@ -63,34 +53,10 @@ const box = {
     padding: '0 48px',
 };
 
-const hr = {
-    borderColor: '#e6ebf1',
-    margin: '20px 0',
-};
-
 const paragraph = {
     color: '#525f7f',
 
     fontSize: '16px',
     lineHeight: '24px',
     textAlign: 'left' as const,
-};
-
-const button = {
-    backgroundColor: '#0A212F',
-    borderRadius: '5px',
-    color: '#fff',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    textDecoration: 'none',
-    textAlign: 'center' as const,
-    display: 'block',
-    width: '100%',
-    padding: '10px',
-};
-
-const footer = {
-    color: '#8898aa',
-    fontSize: '12px',
-    lineHeight: '16px',
 };

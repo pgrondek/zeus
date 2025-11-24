@@ -13,7 +13,7 @@ import {
 } from '@react-email/components';
 
 import * as fs from "fs";
-import Trans from "./trans";
+import {Trans} from "./jinja2";
 
 const baner = fs.readFileSync("./emails/static/zeus.png", "base64");
 
