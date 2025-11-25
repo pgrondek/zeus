@@ -48,10 +48,20 @@ EXPOSE 8000
 # zeus_prod (source code copied, files built)
 #####
 
+FROM node:25 AS frontend
+
+COPY email /email
+WORKDIR /email
+
+RUN npm install
+RUN npm run build
+
 FROM zeus_dev AS zeus_prod
 
 # Copy the rest of Zeus sources
 COPY --chown=user:user . .
+
+COPY --from=frontend --chown=user:user /email/out helios/templates/email
 
 # Use 'settings.prod' as default Django settings, docker-compose-prod.yml will
 # override it
