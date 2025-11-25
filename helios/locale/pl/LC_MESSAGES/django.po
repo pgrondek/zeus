@@ -1240,10 +1240,10 @@ msgstr "Logowanie przez Discorda nie jest włączone dla wyborców"
 msgid "Discord admin login not enabled"
 msgstr "Logowanie przez Discorda nie jest włączone dla administratorów wyborów"
 
-msgid "You\'re not in required discord server"
+msgid "You're not in required discord server"
 msgstr "Nie jesteś na wymaganym serwerze discorda"
 
-msgid "You\'re not in required discord server or you don\'t have a required role"
+msgid "You're not in required discord server or you don't have a required role"
 msgstr "Nie jesteś na wymaganym serwerze discorda albo nie posiadasz wymaganych ról"
 
 msgid "Could not find admin account"
