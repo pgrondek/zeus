@@ -68,7 +68,7 @@ class ContactBackend():
                 if subject_tpl:
                     subject = backend.render_template(subject_tpl, the_vars)
                 body = backend.render_template(body_tpl, the_vars)
-                logger.error("Template ", body_tpl)
+                logger.info("Template: ", body_tpl)
                 try:
                     html_body = backend.render_template(body_tpl.replace(".txt", '.html'), the_vars)
                 except TemplateDoesNotExist:
