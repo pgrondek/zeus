@@ -14,8 +14,9 @@ import {
 
 import * as fs from "fs";
 import {Trans} from "./jinja2";
+import path = require("node:path");
 
-const baner = fs.readFileSync("./emails/static/zeus.png", "base64");
+const baner = fs.readFileSync(path.resolve(__dirname, "../emails/static/zeus.png"), "base64");
 
 export const BaseTemplate = ({children, title} : {children: any, title: any} ) => (
     <>
