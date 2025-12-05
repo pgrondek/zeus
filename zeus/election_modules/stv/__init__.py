@@ -82,7 +82,7 @@ class StvElection(ElectionModuleBase):
     def update_poll_params(self, poll, cleaned_data):
         poll.eligibles_count = int(cleaned_data[0]['eligibles'])
         poll.has_department_limit = cleaned_data[0]['has_department_limit']
-        poll.department_limit = int(cleaned_data[0]['department_limit'])
+        poll.department_limit = cleaned_data[0]['department_limit']
 
     def update_answers(self):
         answers = []
@@ -157,7 +157,15 @@ class StvElection(ElectionModuleBase):
         droop = True
         rnd_gen = None # TODO: should be generated and stored on poll freeze
         if self.poll.has_department_limit:
-            quota_limit = self.poll.department_limit
+            if self.poll.department_limit.find(',') != -1:
+                quota_strings = self.poll.department_limit.split(',')
+                quota_map = dict()
+                for department_quota in quota_strings:
+                    (department, quota) = department_quota.split(':')
+                    quota_map[department] = int(quota)
+                quota_limit = quota_map
+            else:
+                quota_limit = int(self.poll.department_limit)
         else:
             quota_limit = 0
 

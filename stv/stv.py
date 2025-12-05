@@ -201,6 +201,8 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
         current_constituency = constituencies[candidate]
         if isinstance(quota_limit, list):
             effective_limit = quota_limit[current_constituency]
+        elif isinstance(quota_limit, dict):
+            effective_limit = quota_limit[current_constituency]
         else:
             effective_limit = quota_limit
 

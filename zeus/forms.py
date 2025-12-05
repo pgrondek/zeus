@@ -651,11 +651,22 @@ class StvForm(QuestionBaseForm):
         else:
             return 0
         try:
-            dep_limit = int(dep_limit)
-            if dep_limit > 0:
+            if dep_limit.find(',') != -1:
+                quota_strings = dep_limit.split(',')
+                # TODO some validation
+                # if len(quota_strings) != n_constituencies:
+                #     raise ValueError(
+                #         f'separate_quota: expecting {n_constituencies} values, '
+                #         f'got {len(quota_strings)}'
+                #     )
+                # dep_limit = [int(s) for s in quota_strings]
                 return dep_limit
             else:
-                raise forms.ValidationError(message)
+                dep_limit = int(dep_limit)
+                if dep_limit > 0:
+                    return dep_limit
+                else:
+                    raise forms.ValidationError(message)
         except ValueError:
             raise forms.ValidationError(message)
 
