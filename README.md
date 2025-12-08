@@ -183,6 +183,7 @@ If you update the code, execute database migrations before restarting:
 | `ZEUS_ADMIN_EMAIL`          | Email address of zeus admin                         | `zeus.admin@example.com`   |
 | `ZEUS_ELECTION_ADMIN_NAME`  | Name of election admin                              | `Zeus admin`               |
 | `ZEUS_ELECTION_ADMIN_EMAIL` | Email address of election admin                     | `zeus.admin@example.com`   |
+| `CELERY_BROKER_URL`         | Url for redis                                       | `redis://redis-zeus`       |
 
 ### Email configuration
 

@@ -196,7 +196,7 @@ LOGOUT_ON_CONFIRMATION = False
 # elections, as your elections' cast_url will then be incorrect.
 # SECURE_URL_HOST = "https://localhost"
 ZEUS_PROD_HOST = os.environ.get('ZEUS_PROD_HOST', 'localhost')
-if get_from_env('ZEUS_PROD_USE_HTTPS', True) == True:
+if get_from_env('ZEUS_PROD_USE_HTTPS', 1) != 0:
     URL_PREFIX = 'https://'
 else:
     URL_PREFIX = 'http://'
@@ -204,6 +204,9 @@ URL_HOST = SECURE_URL_HOST = URL_PREFIX + ZEUS_PROD_HOST
 
 ALLOWED_HOSTS = ['localhost', ZEUS_PROD_HOST]
 SITE_DOMAIN = ZEUS_PROD_HOST
+CSRF_TRUSTED_ORIGINS = [URL_HOST]
+CSRF_ALLOWED_ORIGINS = [URL_HOST]
+CORS_ORIGINS_WHITELIST = [URL_HOST]
 
 # election stuff
 SITE_TITLE = get_from_env('SITE_TITLE', 'Zeus election server')
@@ -255,8 +258,8 @@ else:
     #format = '%(asctime)s %(levelname)s %(message)s'
 #)
 
-CELERY_BROKER_URL = 'redis://redis'
-CELERY_RESULT_BACKEND = 'redis://broker'
+CELERY_BROKER_URL = get_from_env('CELERY_BROKER_URL', 'redis://redis')
+CELERY_RESULT_BACKEND = get_from_env('CELERY_RESULT_BACKEND', 'redis://broker')
 
 BOOTH_STATIC_PATH = ROOT_PATH + '/zeus/static/booth/'
 
