@@ -54,7 +54,7 @@ COPY email /email
 WORKDIR /email
 
 RUN npm install
-RUN npm run build
+RUN npm run export
 
 FROM zeus_dev AS zeus_prod
 
