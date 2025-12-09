@@ -249,12 +249,14 @@ def update_candidate_counts(full_data, current_round, vote_count, hopefuls):
 
 
 def count_stv(ballots, seats, droop=True, constituencies=None,
-              quota_limit=0, rnd_gen=None, logger=logger):
+              quota_limit=0, rnd_gen=None, logger=logger, new_droop=False):
     """Performs a STV vote for the given ballots and number of seats.
 
     If droop is true the election threshold is calculated according to the
     Droop quota:
             threshold = int(1 + (len(ballots) / (seats + 1.0)))
+    New Droop quota:
+            threshold = int(len(ballots) / (seats + 1.0))
     otherwise it is calculated according to the following formula:
             threshold = int(math.ceil(1 + len(ballots) / (seats + 1.0)))
     The constituencies argument is a map of candidates to constituencies, if
@@ -287,7 +289,9 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
 
     seed()
 
-    if droop:
+    if new_droop:
+        threshold = len(ballots) / (seats + 1.0)
+    elif droop:
         threshold = int(1 + (len(ballots) / (seats + 1.0)))
     else:
         threshold = int(math.ceil(1 + len(ballots) / (seats + 1.0)))

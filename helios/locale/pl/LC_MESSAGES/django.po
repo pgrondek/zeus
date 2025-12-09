@@ -191,10 +191,6 @@ msgstr ""
 "Wymagane są co najmniej dwa pola, Identyfikator rejestracji oraz E-mail"
 
 #, python-format
-msgid "Malformed mobile phone number: %s"
-msgstr "Nieprawidłowy numer telefonu komórkowego: %s"
-
-#, python-format
 msgid "Voter weight must be a positive integer, not %s"
 msgstr "Waga głosu musi być liczbą dodatnią, nie %s"
 
@@ -589,7 +585,8 @@ msgid "Eligibles count"
 msgstr "Liczba mandatów"
 
 msgid "Maximum elected from the same constituency"
-msgstr "Maksymalna liczba osób wybranych z tej samej grupy"
+msgstr "Maksymalna liczba osób wybranych z tej samej grupy<br/>"
+"Możesz ustawić takie samo ograniczenie na wszystkie grupy (21) albo ustawić inny limit na różne grupy (M:1,K:5)"
 
 msgid "Min answers"
 msgstr "Minimum odpowiedzi"
@@ -798,9 +795,6 @@ msgstr "Nazwisko"
 
 msgid "Middle or other name"
 msgstr "Drugie imię"
-
-msgid "Mobile phone"
-msgstr "Telefon komórkowy"
 
 msgid "Vote weight"
 msgstr "Waga głosu"

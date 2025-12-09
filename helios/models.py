@@ -705,6 +705,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     has_department_limit = models.BooleanField(default=0)
     department_limit = models.CharField(default=0, max_length=1000)
 
+    new_droop = models.BooleanField(default=False)
+
     voters_last_notified_at = models.DateTimeField(null=True, default=None)
     index = models.PositiveIntegerField(default=1)
 

@@ -161,7 +161,10 @@ msgid "This field is required."
 msgstr "To pole jest wymagane."
 
 msgid "maximum number of elected from the same constituency"
-msgstr "maksymalna liczba osób wybranych z tej samej grupy"
+msgstr ""
+"maksymalna liczba osób wybranych z tej samej grupy<br/>"
+"Możesz ustawić takie samo ograniczenie na wszystkie grupy (21) albo ustawić "
+"inny limit na różne grupy (M:1,K:5)"
 
 msgid "Constituency limit"
 msgstr "Ograniczenie grup"
@@ -240,10 +243,6 @@ msgstr "Wyślij do"
 msgid "Email"
 msgstr "E-mail"
 
-#, python-format
-msgid "%d deliveries available"
-msgstr "Można wysłać %d SMSów"
-
 msgid "Current password"
 msgstr "Aktualne hasło"
 
@@ -292,7 +291,6 @@ msgstr ""
 "Lista kandydatów. np., <br/><br/>\n"
 "Imię Nazwisko:parytet M<br />\n"
 "Imię Nazwisko:parytet K<br />\n"
-
 
 msgid "Election name"
 msgstr "Nazwa wyborów"

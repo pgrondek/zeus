@@ -698,6 +698,9 @@ class LoginForm(forms.Form):
 
 
 class PollForm(forms.ModelForm):
+    new_droop = forms.BooleanField(label=_('Nowa kwota droopa'),
+                                      required=False,
+                                      help_text='Czy użyć kwoty ilość głosów/(ilość miejsc +1)?')
 
     def __init__(self, *args, **kwargs):
         self.election = kwargs.pop('election', None)
@@ -705,10 +708,11 @@ class PollForm(forms.ModelForm):
 
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['new_droop'].widget.attrs['readonly'] = True
 
     class Meta:
         model = Poll
-        fields = ('name',)
+        fields = ('name','new_droop',)
 
     def iter_fieldset(self, name):
         for field in self.fieldsets[name][2]:

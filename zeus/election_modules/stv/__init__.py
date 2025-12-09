@@ -180,7 +180,7 @@ class StvElection(ElectionModuleBase):
         stv_logger.addHandler(handler)
         stv_logger.setLevel(logging.DEBUG)
         results = count_stv(ballots, seats, droop, constituencies, quota_limit,
-                            rnd_gen, logger=stv_logger)
+                            rnd_gen, logger=stv_logger, new_droop=self.poll.new_droop)
         results = list(results[0:2])
         handler.close()
         stv_stream.seek(0)
