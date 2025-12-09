@@ -283,7 +283,7 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
             allocated[candidate] = []
         if candidate not in candidates: # check not really needed
             candidates.append(candidate)
-            vote_count[candidate] = 0
+            vote_count[candidate] = 0.0
 
     seed()
 
