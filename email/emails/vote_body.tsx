@@ -20,7 +20,7 @@ export const VoteBody = () => (
         <Section style={box}>
 
             <Text style={paragraph}>
-                <Trans text={`Dear voter,}`}/>
+                <Trans text={`Dear voter,`}/>
             </Text>
             <If condition={`custom_message`}>
                 <Text style={paragraph}>
@@ -37,34 +37,34 @@ export const VoteBody = () => (
                 <Expression text={`poll.name`} />
             </code>
             <Text style={paragraph}>
-                <Trans text={`starting}`}/> <Expression text={`election.voting_starts_at`} />,
-                <Trans text={`and ending}`}/> <Expression text={`election.voting_ends_at`} />
-                <Trans text={`Your registration ID is:}`}/> <Expression text={`voter.voter_login_id`} />.
+                <Trans text={`starting`}/> <Expression text={`election.voting_starts_at`} />,
+                <Trans text={`and ending`}/> <Expression text={`election.voting_ends_at`} /> <br/>
+                <Trans text={`Your registration ID is:`}/> <Expression text={`voter.voter_login_id`} />.
             </Text>
 
             <Text style={paragraph}>
-                <Trans text={`To submit your vote, follow the link below}`}/>
+                <Trans text={`To submit your vote, follow the link below`}/>
             </Text>
             <Button style={button} href="{{ voter.get_quick_login_url }}">
-                {`{ % trans "Vote now}`}
+                <Trans text={`Vote now`}/>
             </Button>
 
             <Hr style={hr}/>
             <Text style={paragraph}>
-                <Trans text={`Information:}`}/>
+                <Trans text={`Information:`}/>
             </Text>
             <ul>
-                <li><Trans text={`You can vote more than once. Only your last vote will be counted.}`}/></li>
+                <li><Trans text={`You can vote more than once. Only your last vote will be counted.`}/></li>
                 <li>
-                    <Trans text={`For information about the voting you can contact the trustees by phone,}`}/> <br/>
+                    <Trans text={`For information about the voting you can contact the trustees by phone,`}/> <br/>
                     <Expression text={`election.help_phone`} /><br/>
-                    <Trans text={`or by email,}`}/><br/>
+                    <Trans text={`or by email,`}/><br/>
                     <Expression text={`election.help_email`} /><br/>
                 </li>
                 <If condition={`voter.audit_passwords`} >
                     <li>
-                        <Trans text={`If you want to initiate an audit vote,}`}/>
-                        <Trans text={`the valid audit codes are}`}/>
+                        <Trans text={`If you want to initiate an audit vote,`}/>
+                        <Trans text={`the valid audit codes are`}/>
                         <code
                             className="font-mono font-bold px-1 py-px bg-[#dfe1e4] text-[#3c4149] text-[21px] tracking-[-0.3px] rounded">
                             <For arrayName={`voter.get_audit_passwords`} iteratorName={`pass`}>
