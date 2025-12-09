@@ -1,5 +1,5 @@
 export const Expression= ({text}: { text:any }) => (
-    <span dangerouslySetInnerHTML={{ __html: `{{ ${text} }}`}} />
+    <span dangerouslySetInnerHTML={{ __html: `{{ ${text} }} `}} />
 );
 
 export const Statement= ({text}: { text:any }) => (

@@ -1121,6 +1121,18 @@ msgstr ""
 "w niniejszym e-mailu znajduje się załączone zaszyfrowane potwierdzenie "
 "oddania głosu."
 
+msgid "You have successfully cast a vote in"
+msgstr "Udało Ci się zagłosować w"
+
+msgid "as"
+msgstr "jako"
+
+msgid "with registration ID:"
+msgstr "z identyfikatorem:"
+
+msgid "you can find your encrypted vote attached in this mail."
+msgstr "w niniejszym e-mailu znajduje się załączone zaszyfrowane potwierdzenie oddania głosu."
+
 msgid "Thank you for voting"
 msgstr "Dziękujemy za głosowanie"
 

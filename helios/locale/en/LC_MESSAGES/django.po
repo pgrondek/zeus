@@ -1087,6 +1087,18 @@ msgid ""
 "you can find your encrypted vote attached in this mail."
 msgstr ""
 
+msgid "You have successfully cast a vote in"
+msgstr ""
+
+msgid "as"
+msgstr ""
+
+msgid "with registration ID:"
+msgstr ""
+
+msgid "you can find your encrypted vote attached in this mail."
+msgstr ""
+
 msgid "Thank you for voting"
 msgstr ""
 
