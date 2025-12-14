@@ -1,5 +1,8 @@
 
 import os
+
+from django.conf import settings
+
 from stv.stv import count_stv, Ballot
 import io
 import logging
@@ -9,6 +12,7 @@ from datetime import datetime
 
 
 def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
+    language = el_data['language']
     eligibles = el_data['numOfEligibles']
     elected_limit = el_data['electedLimit']
     ballots = el_data['ballots']
@@ -55,10 +59,23 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     stv_logger.addHandler(handler)
     stv_logger.setLevel(logging.DEBUG)
 
+    if elected_limit:
+        if elected_limit.find(':') != -1:
+            quota_strings = elected_limit.split(',')
+            quota_map = dict()
+            for department_quota in quota_strings:
+                (department, quota) = department_quota.split(':')
+                quota_map[department] = int(quota)
+            quota_limit = quota_map
+        else:
+            quota_limit = int(elected_limit)
+    else:
+        quota_limit = 0
+
     count_results = count_stv(input_ballots, eligibles,
                                 droop=True,
                                 constituencies=constituencies,
-                                quota_limit=elected_limit if elected_limit else 0,
+                                quota_limit=quota_limit if elected_limit else 0,
                                 rnd_gen=None, logger=stv_logger)
 
     results = list(count_results[0:2])
@@ -87,6 +104,6 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     poll_voters = Voters(poll_voters)
     data = [[poll_name, poll_results, questions, poll_voters]]
     build_stv_doc(elName, pollName, institution, voting_starts,
-                    voting_ends, None, data, 'el',
+                    voting_ends, None, data, [language],
                     filename=filename)
     return [('pdf', filename)]

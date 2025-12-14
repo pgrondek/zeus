@@ -157,7 +157,7 @@ class StvElection(ElectionModuleBase):
         droop = True
         rnd_gen = None # TODO: should be generated and stored on poll freeze
         if self.poll.has_department_limit:
-            if self.poll.department_limit.find(',') != -1:
+            if self.poll.department_limit.find(':') != -1:
                 quota_strings = self.poll.department_limit.split(',')
                 quota_map = dict()
                 for department_quota in quota_strings:
