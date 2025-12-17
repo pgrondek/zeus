@@ -521,6 +521,7 @@ class StvForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
         deps = kwargs['initial']['departments_data'].split('\n')
+        self.deps = deps
         self.department_choices = []
         for dep in deps:
             self.department_choices.append((dep.strip(), dep.strip()))
@@ -650,25 +651,23 @@ class StvForm(QuestionBaseForm):
                 raise forms.ValidationError(message)
         else:
             return 0
-        try:
-            if dep_limit.find(',') != -1:
-                quota_strings = dep_limit.split(',')
-                # TODO some validation
-                # if len(quota_strings) != n_constituencies:
-                #     raise ValueError(
-                #         f'separate_quota: expecting {n_constituencies} values, '
-                #         f'got {len(quota_strings)}'
-                #     )
-                # dep_limit = [int(s) for s in quota_strings]
-                return dep_limit
-            else:
+        if dep_limit.find(':') != -1:
+            message = _("Could not find department")
+            quota_strings = dep_limit.split(',')
+            for department_quota in quota_strings:
+                (department, quota) = department_quota.split(':')
+                if not department in self.deps:
+                    raise ValidationError(f'{message} "{department}"')
+            return dep_limit
+        else:
+            try:
                 dep_limit = int(dep_limit)
                 if dep_limit > 0:
                     return dep_limit
                 else:
                     raise forms.ValidationError(message)
-        except ValueError:
-            raise forms.ValidationError(message)
+            except ValueError:
+                raise forms.ValidationError(message)
 
 
 class LoginForm(forms.Form):
