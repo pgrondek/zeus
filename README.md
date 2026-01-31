@@ -14,6 +14,7 @@ Changes introduced in Zeus-ng:
 * Removed SMS notifications
 * Everyone in institution can see elections
 * Added emails for election operators
+* Require at least one external trustee per non-trial election
 
 The differences from Helios and Zeus are as follows:
 

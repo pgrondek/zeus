@@ -383,7 +383,10 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     @property
     def election_issues_before_freeze(self):
         issues = []
-        trustees = Trustee.objects.filter(election=self)
+        if self.trial:
+            trustees = Trustee.objects.filter(election=self)
+        else:
+            trustees = Trustee.objects.filter(election=self, secret_key__isnull=True)
         if len(trustees) == 0:
             issues.append({
                 'type': 'trustees',
